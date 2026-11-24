@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Admin</title>
+<style>
+:root{--bg:#0F1419;--sf:#1A222B;--ln:#2A3541;--tx:#E8EDF2;--mu:#9AA7B4;--gr:#3DDC97;--rd:#FF7B7B;--bl:#6AA5FF}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,"Noto Sans Bengali",sans-serif;padding-bottom:76px;overflow-x:hidden}
+#app{max-width:560px;margin:0 auto;padding:16px}h1{font-size:22px;margin:6px 0 12px}h2{font-size:16px;margin:0 0 8px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:14px;margin-bottom:12px}
+input,select,textarea{width:100%;min-height:44px;background:var(--bg);border:1px solid var(--ln);border-radius:10px;color:var(--tx);padding:8px 12px;margin:4px 0 10px;font:inherit}
+textarea{min-height:110px}input[type=checkbox]{width:auto;min-height:auto;margin:0 6px 0 0}
+.btn{min-height:44px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font-weight:600;padding:0 12px;cursor:pointer;font:inherit}
+.btn.p{background:var(--gr);color:var(--bg);border:0;width:100%}.btn.r{color:var(--rd)}.btn.g{color:var(--gr)}.btn.s{min-height:34px;font-size:13px;padding:0 10px}
+.btn:disabled{opacity:.5}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.sp{justify-content:space-between}.mu{color:var(--mu);font-size:13px}
+.err{color:var(--rd);font-size:14px;white-space:pre-line}.ok{color:var(--gr);font-size:14px;white-space:pre-line}
+.chip{font-size:12px;font-weight:700;border-radius:8px;padding:2px 8px;background:var(--ln);display:inline-block}
+.it{padding:10px 0;border-top:1px solid var(--ln)}.big{font-size:24px;font-weight:700}.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.alert{border-color:var(--rd)}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--sf);border-top:1px solid var(--ln);display:flex;overflow-x:auto}
+nav button{flex:1 0 auto;min-width:62px;min-height:56px;background:none;border:0;border-top:3px solid transparent;color:var(--mu);font:inherit;font-size:12px;padding:0 4px}
+nav button.on{color:var(--gr);border-color:var(--gr);font-weight:700}
+label.lb{display:block;font-size:13px;color:var(--mu);margin-top:6px}
+/* ---------- visual refresh ---------- */
+:root{--bg:#0A0E13;--sf:#131A22;--sf2:#1A232D;--ln:#243040;--tx:#EEF2F6;--mu:#8D9BAB;--gr:#34D399;--rd:#F87171;--bl:#60A5FA;--gold:#FBBF24}
+body{background:radial-gradient(900px 420px at 50% -180px,#17293d 0%,var(--bg) 62%) fixed,var(--bg)}
+#app{max-width:560px}
+h1{font-size:24px;font-weight:800;letter-spacing:-.3px;margin:12px 0 16px}
+h2{font-size:15px;font-weight:700;color:#D6DEE7;margin:0 0 10px}
+.card{background:linear-gradient(180deg,var(--sf2),var(--sf));border:1px solid var(--ln);border-radius:16px;padding:16px;box-shadow:0 10px 26px rgba(0,0,0,.26);margin-bottom:12px}
+.card.alert{border-color:rgba(248,113,113,.5);background:linear-gradient(180deg,rgba(248,113,113,.12),var(--sf))}
+.g2{gap:12px}.g2 .card{margin-bottom:0}
+.g2 .big{font-size:26px}
+.big{font-weight:800;letter-spacing:-.4px}
+.btn{border-radius:12px;font-weight:700;transition:transform .08s,opacity .2s}
+.btn:active{transform:scale(.98)}
+.btn.p{background:linear-gradient(135deg,#34D399,#22C58B);color:#06120D;box-shadow:0 8px 20px rgba(52,211,153,.22)}
+.btn.s{min-height:36px;font-size:13px;border-radius:10px}
+.btn.g{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.35)}
+.btn.r{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.35)}
+input,select,textarea{background:#0E141B;border-radius:12px;border-color:#2B3848}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gr);box-shadow:0 0 0 3px rgba(52,211,153,.15)}
+.mu{color:var(--mu)}
+.chip{border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:800}
+.it{padding:12px 0;border-top:1px solid #1E2935}
+.err{font-size:14px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-radius:12px;padding:10px 12px}
+.ok{font-size:14px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:12px;padding:10px 12px}
+nav{background:rgba(19,26,34,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--ln);box-shadow:0 -8px 24px rgba(0,0,0,.25)}
+nav button{min-height:62px;font-size:11px;border-top:0;position:relative;color:var(--mu);min-width:64px}
+nav button.on{color:var(--gr);font-weight:800}
+nav button.on::before{content:"";position:absolute;top:0;left:26%;right:26%;height:3px;border-radius:0 0 6px 6px;background:var(--gr);box-shadow:0 2px 10px rgba(52,211,153,.5)}
+</style></head><body><div id="app"></div><nav id="nav" hidden></nav>
+<script>
+const A={tok:sessionStorage.getItem("at")||"",tab:"home",res:"",bad:false,d:{},
+  wdSt:"PENDING",wdM:"",wdSel:new Set(),rSt:"PENDING",rQ:"",rSel:new Set(),dSt:"PENDING",dSel:new Set(),uQ:"",days:"30",nav:null};
+const TABS=[["home","🏠 হোম"],["sig","📊 সিগন্যাল"],["users","👥 ইউজার"],["wd","💸 Withdraw"],["ref","🎁 রেফারেল"],["dep","🏦 ডিপোজিট"],["flags","🚩 ফ্ল্যাগ"],["set","⚙️ সেটিংস"],["more","⋯ আরও"]];
+const $c=c=>(c<0?"−":"")+"$"+(Math.abs(c)/100).toFixed(2);
+const bd=t=>t?new Date(t).toLocaleString("bn-BD",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"—";
+function h(t,p,...k){const e=document.createElement(t);for(const[a,v]of Object.entries(p||{})){if(a==="class")e.className=v;else if(a.startsWith("on"))e.addEventListener(a.slice(2),v);else if(v!==false&&v!=null)e.setAttribute(a,v)}
+ for(const x of k.flat(Infinity)){if(x==null||x===false)continue;e.append(x.nodeType?x:document.createTextNode(String(x)))}return e}
+async function api(path,json,method,form){const r=await fetch(path,{method:method||((json||form)?"POST":"GET"),headers:Object.assign({"Authorization":"Bearer "+A.tok},json?{"Content-Type":"application/json"}:{}),body:form||(json?JSON.stringify(json):undefined)});
+ const d=await r.json().catch(()=>({}));if(r.status===401){A.tok="";sessionStorage.removeItem("at")}if(!r.ok)throw new Error(d.error||"সমস্যা");return d}
+function logout(){api("/api/admin/logout",{}).catch(()=>{});A.tok="";sessionStorage.removeItem("at");A.d={};A.res="";draw()}
+async function load(){if(!A.tok){draw();return}const t=A.tab,d=A.d;
+ try{
+  if(t==="home"){d.stats=await api("/api/admin/stats");d.reqs=(await api("/api/admin/requests")).requests}
+  if(t==="sig"){d.sigs=(await api("/api/admin/signals")).signals;d.live=(await api("/api/admin/stats")).live_on}
+  if(t==="users"){d.users=(await api("/api/admin/users?q="+encodeURIComponent(A.uQ))).users}
+  if(t==="wd"){d.wd=await api("/api/admin/withdrawals?status="+A.wdSt+(A.wdM?"&method="+encodeURIComponent(A.wdM):""));d.wdm=(await api("/api/admin/withdraw-methods")).methods}
+  if(t==="ref"){d.ref=await api("/api/admin/ref-earnings?status="+A.rSt+"&q="+encodeURIComponent(A.rQ));d.set=await api("/api/admin/settings")}
+  if(t==="dep"){d.dep=(await api("/api/admin/deposits?status="+A.dSt)).deposits;d.dstat=await api("/api/admin/deposits/stats")}
+  if(t==="flags"){d.flags=(await api("/api/admin/flags")).flags;d.modes=(await api("/api/admin/update-modes")).modes}
+  if(t==="set"){[d.set,d.st,d.wdm]=await Promise.all([api("/api/admin/settings"),api("/api/admin/status"),api("/api/admin/withdraw-methods").then(x=>x.methods)])}
+  if(t==="more"){d.nt=(await api("/api/admin/notices")).notices;d.reqs=(await api("/api/admin/requests")).requests}
+ }catch(e){A.res=e.message;A.bad=true}
+ draw()}
+const act=fn=>async()=>{try{A.res="";A.bad=false;await fn()}catch(e){A.res=e.message;A.bad=true}await load()};
+const say=(m,bad)=>{A.res=m;A.bad=!!bad};
+const ask=(m,def)=>prompt(m,def||"");
+
+// ---------- login ----------
+function login(app){const u=h("input",{placeholder:"অ্যাডমিন আইডি",autocomplete:"username"}),p=h("input",{type:"password",placeholder:"পাসওয়ার্ড",autocomplete:"current-password"});
+ const go=async()=>{try{A.res="";A.bad=false;const d=await api("/api/admin/login",{username:u.value.trim(),password:p.value});A.tok=d.token;sessionStorage.setItem("at",d.token);A.tab="home";await load()}catch(e){A.res=e.message;A.bad=true;draw()}};
+ p.addEventListener("keydown",e=>{if(e.key==="Enter")go()});
+ app.append(h("h1",{},"অ্যাডমিন"),h("div",{class:"card"},h("label",{class:"lb"},"আইডি"),u,h("label",{class:"lb"},"পাসওয়ার্ড"),p,h("button",{class:"btn p",onclick:go},"ঢুকুন")),A.res?h("div",{class:A.bad?"err":"ok"},A.res):"")}
+
+// ---------- home ----------
+function homeV(){const s=A.d.stats||{},c=(l,v,cl)=>h("div",{class:"card"+(cl?" "+cl:"")},h("div",{class:"mu"},l),h("div",{class:"big"},v==null?"—":v));
+ const alerts=[];if(s.wd_alert)alerts.push("⚠️ "+s.wd_alert+"টা Withdraw "+"২৪ ঘণ্টার বেশি অপেক্ষমাণ");if(s.on_hold)alerts.push("⏸ "+s.on_hold+"টা Withdraw হোল্ডে");if(s.pending_dep)alerts.push("💳 "+s.pending_dep+"টা ডিপোজিট যাচাই বাকি");if(s.pending_ref)alerts.push("🎁 "+s.pending_ref+"টা রেফারেল বোনাস অনুমোদন বাকি (oldest: "+bd(s.oldest_ref)+")");
+ return[h("h1",{},"আজকের অবস্থা"),
+  alerts.length?h("div",{class:"card alert"},h("b",{class:"rd"},"জরুরি"),alerts.map(a=>h("div",{class:"it"},a))):null,
+  h("div",{class:"g2"},c("মোট ইউজার",s.users),c("VIP",s.vip),c("UID যাচাই বাকি",s.pending_uid),c("Withdraw বাকি",s.pending_wd),c("ডিপোজিট বাকি",s.pending_dep),c("রেফারেল বাকি",s.pending_ref),c("Personal Request",s.pending_req),c("আজকের ভোট",s.trades_today)),
+  h("div",{class:"card"},h("div",{class:"mu"},"রেফারেল অপেক্ষমাণ (মোট)"),h("div",{class:"big"},$c(s.pending_ref_c||0))),
+  h("div",{class:"card"},h("div",{class:"row sp"},h("b",{},"Live সেশন: "+(s.live_on?"চালু":"বন্ধ")),h("button",{class:"btn "+(s.live_on?"r":"g"),onclick:act(async()=>{await api("/api/admin/live/toggle",{on:!s.live_on})})},s.live_on?"বন্ধ করুন":"চালু করুন"))),
+  h("div",{class:"card"},h("h2",{},"Personal Request"),(A.d.reqs||[]).length?A.d.reqs.map(r=>h("div",{class:"it"},h("b",{},r.name+" · "+r.pair+" "+r.time_text),h("button",{class:"btn g s",style:"margin-left:8px",onclick:act(async()=>{const t=ask("উত্তর লিখুন (যেমন: UP, 14:30)");if(t)await api("/api/admin/requests/"+r.id,{reply:t})})},"উত্তর দিন"))):h("div",{class:"mu"},"কোনো রিকোয়েস্ট নেই"))]}
+
+// ---------- signals ----------
+function sigV(){const tx=h("textarea",{placeholder:"প্রতি লাইনে একটা:\n14:30 EURUSD UP\n15:00 GBPUSD DOWN VIP\n15:30 BTCUSDT UP FREE"}),aud=h("select",{},h("option",{value:"ALL"},"সবার জন্য"),h("option",{value:"VIP"},"শুধু VIP")),
+ mode=h("select",{},h("option",{value:"all"},"সব একসাথে এখনই"),h("option",{value:"one"},"একটা একটা করে (সময়ের আগে)")),lead=h("input",{value:"5",inputmode:"numeric"});
+ const csv=h("input",{type:"file",accept:".csv,.txt",onchange:e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{tx.value=t.split(/\r?\n/).filter(x=>x.trim()&&!/^time|^সময়/i.test(x.trim())).map(x=>x.replace(/,/g," ")).join("\n");say("ফাইল লোড হয়েছে, দেখে সেভ করুন")})}});
+ const lp=h("input",{placeholder:"পেয়ার, যেমন EURUSD"}),ld=h("select",{},h("option",{value:"UP"},"UP"),h("option",{value:"DOWN"},"DOWN")),lm=h("input",{value:"1",inputmode:"numeric"}),la=h("select",{},h("option",{value:"ALL"},"সবার জন্য"),h("option",{value:"VIP"},"শুধু VIP"));
+ return[h("h1",{},"সিগন্যাল"),
+  h("div",{class:"card"},h("h2",{},"Future সিগন্যাল যোগ"),tx,h("div",{class:"mu"},"লাইনের শেষে FREE/VIP লিখলে ওই সিগন্যাল আলাদা হবে। CSV ফাইলও দেওয়া যাবে (time,pair,direction)"),csv,
+    h("label",{class:"lb"},"অডিয়েন্স"),aud,h("label",{class:"lb"},"মোড"),mode,h("div",{class:"mu"},"একটা একটা হলে কত মিনিট আগে দেখাবে"),lead,
+    h("button",{class:"btn p",onclick:act(async()=>{const d=await api("/api/admin/signals",{text:tx.value,audience:aud.value,mode:mode.value,lead_min:lead.value});say("যোগ হয়েছে: "+d.added+" · আগেই ছিল: "+d.duplicates+(d.errors.length?"\n"+d.errors.join("\n"):""),d.errors.length>0)})},"সিগন্যাল সেভ করুন")),
+  h("div",{class:"card"},h("h2",{},"Live সিগন্যাল পাঠান"),h("div",{class:"mu"},"আগে Live সেশন চালু করুন (হোম ট্যাব)"),lp,ld,h("label",{class:"lb"},"কত মিনিট পরে এন্ট্রি"),lm,la,
+    h("button",{class:"btn p",onclick:act(async()=>{await api("/api/admin/live",{pair:lp.value,direction:ld.value,minutes:lm.value,audience:la.value});say("Live সিগন্যাল গেছে")})},"Live পাঠান")),
+  h("div",{class:"card"},h("h2",{},"আজকের সিগন্যাল ("+(A.d.sigs||[]).length+")"),(A.d.sigs||[]).map(s=>h("div",{class:"row sp it"},h("span",{},s.time+" · "+s.pair+" · "+s.direction+" "),h("span",{class:"chip"},s.audience==="VIP"?"VIP":"FREE"),h("button",{class:"btn g s",onclick:act(async()=>{const t=ask("নতুন সময় (HH:MM), খালি রাখলে বদলাবে না",s.time);if(t===null)return;const p=ask("পেয়ার",s.pair)||s.pair;const dr=ask("UP বা DOWN",s.direction)||s.direction;const au=ask("ALL বা VIP",s.audience)||s.audience;await api("/api/admin/signals/"+s.id,{time:t,pair:p,direction:dr,audience:au},"PUT")})},"সম্পাদনা"),h("button",{class:"btn r s",onclick:act(async()=>{await api("/api/admin/signals/"+s.id,null,"DELETE")})},"মুছুন"))))]}
+
+// ---------- users ----------
+function usersV(){const q=h("input",{placeholder:"নাম, ইমেইল বা UID",value:A.uQ}),dy=h("input",{value:A.days,inputmode:"numeric",oninput:e=>{A.days=e.target.value}});
+ const ub=(u,l,a,cl,x)=>h("button",{class:"btn s "+(cl||""),onclick:act(async()=>{await api("/api/admin/users/"+u.id,Object.assign({action:a},x||{}));say("হয়েছে")})},l);
+ const detail=async(u)=>{const d=await api("/api/admin/users/"+u.id+"/detail");alert(JSON.stringify(d,null,1).slice(0,3000))};
+ return[h("h1",{},"ইউজার"),h("div",{class:"card"},q,h("button",{class:"btn p",onclick:()=>{A.uQ=q.value.trim();load()}},"খুঁজুন"),h("label",{class:"lb"},"VIP বাটনে কত দিনের VIP (০ = স্থায়ী)"),dy),
+ ...(A.d.users||[]).map(u=>h("div",{class:"card"},h("b",{},u.name+" "),h("span",{class:"chip"},u.status),u.blocked?h("span",{class:"chip",style:"background:var(--rd);color:var(--bg)"},"BLOCK"):null,
+  h("div",{class:"mu"},"Warning "+u.warnings+"/৩ · UID: "+(u.quotex_uid||"—")+" ("+u.uid_status+")"+(u.vip_until?" · VIP শেষ "+new Date(u.vip_until).toLocaleDateString("bn-BD"):"")),
+  h("div",{class:"row",style:"margin-top:8px"},ub(u,"VIP দিন","vip","g",{days:Number(A.days)}),u.status==="VIP"&&ub(u,"FREE করুন","free"),ub(u,"Warn","warn"),u.blocked?ub(u,"Unblock","unblock"):ub(u,"Block","block","r"),
+   u.uid_status==="PENDING"&&ub(u,"UID ঠিক","uid_approve","g"),u.uid_status==="PENDING"&&ub(u,"UID বাতিল","uid_reject","r"),
+   h("button",{class:"btn s",onclick:()=>detail(u)},"বিস্তারিত"),
+   h("button",{class:"btn s",onclick:act(async()=>{const b=ask("মেসেজ লিখুন");if(b)await api("/api/admin/users/"+u.id+"/message",{body:b});say("মেসেজ গেছে")})},"মেসেজ"),
+   h("button",{class:"btn s",onclick:act(async()=>{const a=ask("ওয়ালেটে কত ডলার যোগ/বিয়োগ? (বিয়োগে - দিন)");if(a)await api("/api/admin/users/"+u.id+"/wallet",{amount:a,note:"অ্যাডমিন"});say("ওয়ালেট বদলেছে")})},"ওয়ালেট"))))]}
+
+// ---------- withdrawals ----------
+function wdV(){const sts=["PENDING","PROCESSING","ON_HOLD","PAID","REJECTED"],ms=(A.d.wdm||[]).map(m=>m.name);
+ const st=h("select",{onchange:e=>{A.wdSt=e.target.value;A.wdSel.clear();load()}},sts.map(s=>h("option",{value:s,selected:s===A.wdSt?"selected":null},s)));
+ const mm=h("select",{onchange:e=>{A.wdM=e.target.value;A.wdSel.clear();load()}},h("option",{value:""},"সব পদ্ধতি"),ms.map(m=>h("option",{value:m,selected:m===A.wdM?"selected":null},m)));
+ const list=A.d.wd?A.d.wd.withdrawals:[];
+ const one=(w,l,a,fn)=>h("button",{class:"btn s "+(a==="r"?"r":"g"),onclick:act(fn)},l);
+ const rows=list.map(w=>h("div",{class:"it"},h("div",{class:"row sp"},h("label",{class:"row"},h("input",{type:"checkbox",checked:A.wdSel.has(w.id)?"checked":null,onchange:e=>{e.target.checked?A.wdSel.add(w.id):A.wdSel.delete(w.id)}}),h("b",{class:"big",style:"font-size:18px"},$c(w.amount_c))),h("span",{class:"chip"},w.status)),
+   h("div",{},w.name+" · "+w.method+" · fee "+$c(w.fee_c||0)+" · net "+$c(w.net_c||w.amount_c)),h("div",{style:"word-break:break-all;margin:4px 0",class:"mu"},w.account),h("div",{class:"mu"},bd(w.created_at)+(w.tx_ref?" · Txn "+w.tx_ref:"")+(w.hold_reason?" · হোল্ড: "+w.hold_reason:"")),
+   h("div",{class:"row",style:"margin-top:6px"},
+    (w.status==="PENDING"||w.status==="ON_HOLD")&&one(w,"প্রসেস","g",()=>api("/api/admin/withdrawals/"+w.id,{action:"processing"})),
+    ["PENDING","PROCESSING","ON_HOLD"].includes(w.status)&&one(w,"পরিশোধ","g",()=>{const t=ask("Transaction ID (বাধ্যতামূলক)");if(!t)throw new Error("Txn ID দিন");return api("/api/admin/withdrawals/"+w.id,{action:"pay",tx_ref:t,note:""})}),
+    ["PENDING","PROCESSING"].includes(w.status)&&one(w,"হোল্ড","r",()=>{const n=ask("হোল্ডের কারণ");if(!n)throw new Error("কারণ দিন");return api("/api/admin/withdrawals/"+w.id,{action:"hold",note:n})}),
+    ["PENDING","PROCESSING","ON_HOLD"].includes(w.status)&&one(w,"বাতিল","r",()=>{const n=ask("বাতিলের কারণ");if(!n)throw new Error("কারণ দিন");return api("/api/admin/withdrawals/"+w.id,{action:"reject",note:n})}))));
+ const bulk=A.wdSel.size?h("div",{class:"card"},h("b",{},A.wdSel.size+"টি নির্বাচিত"),h("div",{class:"row",style:"margin-top:6px"},
+   h("button",{class:"btn s g",onclick:act(async()=>{await api("/api/admin/withdrawals/bulk",{ids:[...A.wdSel],action:"processing"});A.wdSel.clear()})},"সবগুলো প্রসেস"),
+   h("button",{class:"btn s r",onclick:act(async()=>{const n=ask("বাতিলের কারণ (৫+ অক্ষর)");if(!n)return;const r=await api("/api/admin/withdrawals/bulk",{ids:[...A.wdSel],action:"reject",note:n});A.wdSel.clear();say("বাতিল: "+r.done+(r.failed.length?"\n"+r.failed.join("\n"):""),r.failed.length>0)})},"সবগুলো বাতিল"))):null;
+ return[h("h1",{},"Withdraw"),h("div",{class:"card"},h("div",{class:"mu"},"আজ পরিশোধ হয়েছে: "+$c((A.d.wd||{}).paid_today_c||0)),h("label",{class:"lb"},"স্ট্যাটাস"),st,h("label",{class:"lb"},"পদ্ধতি"),mm,
+   h("button",{class:"btn s",style:"margin-top:8px",onclick:()=>exportCsv(list)},"CSV ডাউনলোড")),bulk,rows.length?rows:h("div",{class:"card mu"},"কোনো রিকোয়েস্ট নেই")]}
+function exportCsv(list){const head="id,name,amount,fee,net,method,account,status,created_at,tx_ref";const lines=list.map(w=>[w.id,w.name,(w.amount_c/100).toFixed(2),((w.fee_c||0)/100).toFixed(2),((w.net_c||w.amount_c)/100).toFixed(2),w.method,'"'+String(w.account).replace(/"/g,'""')+'"',w.status,w.created_at,w.tx_ref||""].join(","));
+ const b=new Blob(["﻿"+[head,...lines].join("\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="withdrawals.csv";a.click()}
+
+// ---------- referrals ----------
+function refV(){const d=A.d.ref||{},s=d.summary||{},list=d.earnings||[];
+ const st=h("select",{onchange:e=>{A.rSt=e.target.value;A.rSel.clear();load()}},["PENDING","APPROVED","REJECTED"].map(x=>h("option",{value:x,selected:x===A.rSt?"selected":null},x)));
+ const q=h("input",{placeholder:"ইউজারের নাম/ইমেইল",value:A.rQ});
+ const old=s.oldest_pending?Math.floor((Date.now()-new Date(s.oldest_pending).getTime())/86400000):null;
+ const sets=A.d.set||{};
+ const tg=(k,l)=>h("div",{},h("label",{class:"lb"},l),h("select",{id:"s_"+k},h("option",{value:"1",selected:sets[k]==1?"selected":null},"চালু"),h("option",{value:"0",selected:sets[k]!=1?"selected":null},"বন্ধ")));
+ return[h("h1",{},"রেফারেল বোনাস"),
+  h("div",{class:"g2"},h("div",{class:"card"},h("div",{class:"mu"},"অপেক্ষমাণ"),h("div",{class:"big"},$c(s.pending_c||0)+" ("+(s.pending_count||0)+")")),
+   h("div",{class:"card"},h("div",{class:"mu"},"আজ অনুমোদন"),h("div",{class:"big gr"},$c(s.today_approved_c||0)+" ("+(s.today_approved_count||0)+")")),
+   h("div",{class:"card"},h("div",{class:"mu"},"মোট অনুমোদন"),h("div",{class:"big"},$c(s.approved_all_c||0))),
+   h("div",{class:"card"},h("div",{class:"mu"},"মোট বাতিল"),h("div",{class:"big rd"},$c(s.rejected_all_c||0)))),
+  old!=null?h("div",{class:"card mu"},"সবচেয়ে পুরোনো অপেক্ষমাণ: "+old+" দিন আগে"):null,
+  h("div",{class:"card"},st,h("label",{class:"lb"},"খুঁজুন"),q,h("button",{class:"btn s",style:"margin-top:6px",onclick:()=>{A.rQ=q.value.trim();load()}},"খুঁজুন"),
+   A.rSt==="PENDING"&&h("button",{class:"btn s g",style:"margin:6px 0 0 6px",onclick:act(async()=>{const ids=list.filter(x=>x.amount_c<=500).map(x=>x.id);if(!ids.length)throw new Error("$৫-এর নিচে কিছু নেই");const r=await api("/api/admin/ref-earnings/bulk",{ids,action:"approve"});say("অনুমোদন: "+r.done)})},"সব < $5 approve")),
+  A.rSel.size?h("div",{class:"card"},h("b",{},A.rSel.size+"টি নির্বাচিত"),h("div",{class:"row",style:"margin-top:6px"},
+    h("button",{class:"btn s g",onclick:act(async()=>{const r=await api("/api/admin/ref-earnings/bulk",{ids:[...A.rSel],action:"approve"});A.rSel.clear();say("অনুমোদন: "+r.done+(r.failed.length?"\n"+r.failed.join("\n"):""),r.failed.length>0)})},"সবগুলো approve"),
+    h("button",{class:"btn s r",onclick:act(async()=>{const n=ask("বাতিলের কারণ (১০+ অক্ষর)");if(!n)return;const r=await api("/api/admin/ref-earnings/bulk",{ids:[...A.rSel],action:"reject",note:n});A.rSel.clear();say("বাতিল: "+r.done)})},"সবগুলো reject"))):null,
+  list.map(x=>h("div",{class:"it"},h("div",{class:"row sp"},h("label",{class:"row"},x.status==="PENDING"?h("input",{type:"checkbox",checked:A.rSel.has(x.id)?"checked":null,onchange:e=>{e.target.checked?A.rSel.add(x.id):A.rSel.delete(x.id)}}):null,h("b",{},"#"+x.id+" · "+x.user)),h("b",{},$c(x.amount_c))),
+    h("div",{class:"mu"},"থেকে: "+(x.from_user||"?")+" · L"+x.level+" · "+x.kind+" · "+bd(x.created_at)),
+    x.review_note&&h("div",{class:"mu"},"নোট: "+x.review_note),
+    x.status==="PENDING"&&h("div",{class:"row",style:"margin-top:6px"},h("button",{class:"btn s g",onclick:act(async()=>{await api("/api/admin/ref-earnings/"+x.id,{action:"approve"})})},"✅ Approve"),
+      h("button",{class:"btn s r",onclick:act(async()=>{const n=ask("বাতিলের কারণ (১০+ অক্ষর)");if(!n)throw new Error("কারণ দিন");await api("/api/admin/ref-earnings/"+x.id,{action:"reject",note:n})})},"❌ Reject")))),
+  list.length?null:h("div",{class:"card mu"},"কিছু নেই"),
+  h("div",{class:"card"},h("h2",{},"Auto-approve সেটিংস"),tg("ref_auto_approve","Auto-approve"),
+    h("label",{class:"lb"},"কত দিন পরে"),h("input",{id:"s_days",value:sets.ref_auto_approve_days||0,inputmode:"numeric"}),
+    h("label",{class:"lb"},"সর্বোচ্চ পরিমাণ ($)"),h("input",{id:"s_max",value:sets.ref_auto_approve_max||5,inputmode:"decimal"}),
+    h("div",{class:"row"},h("button",{class:"btn s g",onclick:act(async()=>{await api("/api/admin/settings",{ref_auto_approve:document.getElementById("s_ref_auto_approve").value,ref_auto_approve_days:document.getElementById("s_days").value,ref_auto_approve_max:document.getElementById("s_max").value});say("সেভ হয়েছে")})},"Save"),
+      h("button",{class:"btn s",onclick:act(async()=>{const r=await api("/api/admin/ref-earnings/auto-sweep",{force:true});say("Auto-approve: "+r.approved)})},"Run Now")))]}
+
+// ---------- deposits ----------
+async function shotUrl(id){const r=await fetch("/api/admin/deposits/"+id+"/shot",{headers:{Authorization:"Bearer "+A.tok}});if(!r.ok)throw new Error("স্ক্রিনশট নেই");return URL.createObjectURL(await r.blob())}
+function depV(){const list=A.d.dep||[],s=A.d.dstat||{};
+ const st=h("select",{onchange:e=>{A.dSt=e.target.value;A.dSel.clear();load()}},["PENDING","APPROVED","REJECTED"].map(x=>h("option",{value:x,selected:x===A.dSt?"selected":null},x)));
+ return[h("h1",{},"ডিপোজিট"),h("div",{class:"g2"},h("div",{class:"card"},h("div",{class:"mu"},"অপেক্ষমাণ"),h("div",{class:"big"},$c(s.pending_c||0)+" ("+(s.pending_count||0)+")")),h("div",{class:"card"},h("div",{class:"mu"},"মোট অনুমোদন"),h("div",{class:"big gr"},$c(s.approved_c||0)))),
+  h("div",{class:"card"},h("label",{class:"lb"},"স্ট্যাটাস"),st),
+  A.dSel.size?h("div",{class:"card"},h("button",{class:"btn s g",onclick:act(async()=>{const r=await api("/api/admin/deposits/bulk",{ids:[...A.dSel],action:"approve"});A.dSel.clear();say("অনুমোদন: "+r.done)})},A.dSel.size+"টি approve")):null,
+  list.map(x=>h("div",{class:"it card"},h("div",{class:"row sp"},h("label",{class:"row"},x.status==="PENDING"?h("input",{type:"checkbox",checked:A.dSel.has(x.id)?"checked":null,onchange:e=>{e.target.checked?A.dSel.add(x.id):A.dSel.delete(x.id)}}):null,h("b",{},"#"+x.id+" · "+x.name)),h("b",{class:"big",style:"font-size:18px"},$c(x.amount_c))),
+    h("div",{class:"mu"},x.method+" → "+x.account+" · TRX: "+(x.txn_ref||"—")+" · "+bd(x.created_at)),
+    x.note&&h("div",{class:"mu"},"নোট: "+x.note),
+    h("div",{class:"row",style:"margin-top:6px"},x.has_shot&&h("button",{class:"btn s",onclick:async()=>{try{window.open(await shotUrl(x.id),"_blank")}catch(e){say(e.message,true);draw()}}},"স্ক্রিনশট"),
+      x.status==="PENDING"&&h("button",{class:"btn s g",onclick:act(async()=>{await api("/api/admin/deposits/"+x.id,{action:"approve"})})},"✅ Approve"),
+      x.status==="PENDING"&&h("button",{class:"btn s r",onclick:act(async()=>{const n=ask("বাতিলের কারণ (১০+ অক্ষর)");if(!n)throw new Error("কারণ দিন");await api("/api/admin/deposits/"+x.id,{action:"reject",note:n})})},"❌ Reject")))),
+  list.length?null:h("div",{class:"card mu"},"কিছু নেই")]}
+
+// ---------- flags ----------
+function flagsV(){const fl=A.d.flags||[],modes=A.d.modes||[];
+ const names={signals_future:"Future সিগন্যাল",signals_live:"Live সিগন্যাল",signals_crypto:"ক্রিপ্টো সিগন্যাল",ai_analyze:"AI অ্যানালাইসিস",money_mgmt:"Money Management",referral:"রেফারেল",withdraw:"Withdraw",deposit:"ডিপোজিট",personal_req:"Personal Request",vip_signup:"VIP সাইনআপ",registration:"নতুন রেজিস্ট্রেশন",login_google:"Google লগইন",login_phone:"ফোন লগইন"};
+ const affects=h("div",{},Object.keys(names).map(k=>h("label",{class:"row",style:"font-size:13px;margin:4px 0"},h("input",{type:"checkbox",value:k,class:"af"}),names[k])));
+ const ms=h("input",{id:"m_t",placeholder:"শিরোনাম"}),mm=h("textarea",{id:"m_b",placeholder:"ইউজারদের বার্তা"}),ss=h("input",{id:"m_s",type:"datetime-local"}),se=h("input",{id:"m_e",type:"datetime-local"});
+ return[h("h1",{},"ফিচার ফ্ল্যাগ"),
+  h("div",{class:"row"},h("button",{class:"btn s r",onclick:act(async()=>{if(!confirm("সব ফিচার বন্ধ হবে (লগইন ছাড়া)। নিশ্চিত?"))return;await api("/api/admin/flags/panic",{})})},"Panic: সব বন্ধ"),h("button",{class:"btn s g",onclick:act(async()=>{await api("/api/admin/flags/restore",{})})},"Restore: সব চালু")),
+  fl.map(f=>h("div",{class:"card"},h("div",{class:"row sp"},h("b",{},names[f.key]||f.key),h("button",{class:"btn s "+(f.enabled?"g":"r"),onclick:act(async()=>{await api("/api/admin/flags/"+f.key,{enabled:!f.enabled,scope:f.scope,msg:f.msg||"",starts_at:f.starts_at||"",ends_at:f.ends_at||""})})},f.enabled?"চালু":"বন্ধ")),
+    h("div",{class:"row",style:"margin-top:6px"},h("select",{onchange:e=>act(async()=>{await api("/api/admin/flags/"+f.key,{enabled:f.enabled,scope:e.target.value,msg:f.msg||"",starts_at:f.starts_at||"",ends_at:f.ends_at||""})})()},["ALL","VIP","FREE"].map(x=>h("option",{value:x,selected:x===f.scope?"selected":null},"স্কোপ: "+x))),
+     h("button",{class:"btn s",onclick:act(async()=>{const m=ask("বন্ধ থাকলে যে বার্তা দেখাবে",f.msg||"");if(m!==null)await api("/api/admin/flags/"+f.key,{enabled:f.enabled,scope:f.scope,msg:m,starts_at:f.starts_at||"",ends_at:f.ends_at||""})})},"বার্তা")))),
+  h("div",{class:"card"},h("h2",{},"Update mode"),ms,mm,h("label",{class:"lb"},"শুরু"),ss,h("label",{class:"lb"},"শেষ"),se,h("label",{class:"lb"},"কোন ফিচার প্রভাবিত"),affects,
+    h("button",{class:"btn p",onclick:act(async()=>{const a=[...document.querySelectorAll(".af:checked")].map(x=>x.value).join(",");await api("/api/admin/update-modes",{title:ms.value,msg:mm.value,starts_at:ss.value?new Date(ss.value).toISOString():"",ends_at:se.value?new Date(se.value).toISOString():"",affects:a});say("Update mode যোগ হয়েছে")})},"যোগ করুন")),
+  h("div",{class:"card"},h("h2",{},"Update modes"),modes.length?modes.map(m=>h("div",{class:"row sp it"},h("span",{},m.title+" · "+bd(m.starts_at)+"–"+bd(m.ends_at)),h("button",{class:"btn s r",onclick:act(async()=>{await api("/api/admin/update-modes/"+m.id,null,"DELETE")})},"মুছুন"))):h("div",{class:"mu"},"কিছু নেই"))]}
+
+// ---------- settings ----------
+function setV(){const s=A.d.set,st=A.d.st;if(!s||!st)return[h("h1",{},"সেটিংস")];const f={};
+ const T=(k,l,ph)=>{f[k]=h("input",{value:s[k]==null?"":s[k],placeholder:ph||""});return h("div",{},h("label",{class:"lb"},l),f[k])};
+ const X=(k,l)=>{f[k]=h("textarea",{});f[k].value=s[k]||"";return h("div",{},h("label",{class:"lb"},l),f[k])};
+ const Z=(k,l)=>{f[k]=h("select",{},h("option",{value:"1"},"চালু"),h("option",{value:"0"},"বন্ধ"));f[k].value=String(s[k]);return h("div",{},h("label",{class:"lb"},l),f[k])};
+ const ok=(b,t,hint)=>h("div",{class:"row sp it"},h("span",{},t),h("b",{class:b?"gr":"rd"},b?"✓ ঠিক আছে":"✗ "+(hint||"নেই")));
+ const lg=h("input",{type:"file",accept:"image/*"}),ph=h("input",{placeholder:"টেস্ট SMS-এর নম্বর, 01XXXXXXXXX"});
+ return[h("h1",{},"সেটিংস"),
+  h("div",{class:"card"},h("h2",{},"সিস্টেমের অবস্থা"),ok(st.google,"Google লগইন (Client ID)","নিচে Client ID দিন"),ok(st.sms,"ফোন OTP (SMS)"+(st.sms_kind?" · "+st.sms_kind:""),"Render Environment-এ SMS সেট করুন"),ok(st.gemini,"AI (Gemini key)"+(st.gemini?" · "+st.model:""),"GEMINI_API_KEY দিন"),ok(st.persistent,"ডেটা স্থায়ী ডিস্কে ("+st.db_kb+" KB)","DB_PATH=/var/data/app.db ও Disk লাগবে"),ok(!!(st.admin_user),"অ্যাডমিন লগইন","ADMIN_USER ও ADMIN_PASS_HASH দিন"),
+   st.dev_login?h("div",{class:"err",style:"margin-top:8px"},"সতর্কতা: DEV_LOGIN চালু আছে। আসল ইউজারের আগে Render থেকে মুছুন।"):null),
+  h("div",{class:"card"},h("h2",{},"অ্যাপ"),T("app_name","অ্যাপের নাম"),X("welcome","Welcome মেসেজ"),X("terms","ঝুঁকির নোটিশ (লগইন পেজে)"),T("telegram","Telegram গ্রুপ লিংক","https://t.me/..."),T("quotex_link","Quotex রেফারেল লিংক","https://..."),T("vip_min_deposit","VIP-র ন্যূনতম ডিপোজিট ($)"),X("vip_info","VIP নিতে কী লাগবে (ইউজার দেখবে)"),X("help_text","হেল্প পেজের লেখা")),
+  h("div",{class:"card"},h("h2",{},"লগইন"),Z("phone_login","ফোন নম্বর + OTP"),Z("google_login","Google লগইন"),T("google_client_id","Google Client ID","123...apps.googleusercontent.com"),Z("maintenance","রক্ষণাবেক্ষণ মোড"),T("maintenance_msg","রক্ষণাবেক্ষণের বার্তা"),
+   h("div",{class:"mu",style:"margin-top:6px"},"SMS টেস্ট"),ph,h("button",{class:"btn s",onclick:act(async()=>{await api("/api/admin/sms-test",{phone:ph.value});say("টেস্ট SMS গেছে")})},"টেস্ট SMS পাঠান")),
+  h("div",{class:"card"},h("h2",{},"ফিচার চালু/বন্ধ (সেটিং)"),Z("ai_on","স্ক্রিনশট অ্যানালাইসিস"),Z("crypto_on","ক্রিপ্টো BUY/SELL ট্যাব"),Z("referral_on","রেফারেল বোনাস"),Z("withdraw_on","Withdraw"),Z("req_vip_only","Personal Request শুধু VIP-র জন্য")),
+  h("div",{class:"card"},h("h2",{},"দৈনিক লিমিট"),T("analyze_free","অ্যানালাইসিস: FREE"),T("analyze_vip","অ্যানালাইসিস: VIP"),T("crypto_free","ক্রিপ্টো: FREE কয়টা দেখবে"),T("req_limit","Personal Request"),T("vip_days","ডিফল্ট VIP মেয়াদ (দিন, ০ = স্থায়ী)")),
+  h("div",{class:"card"},h("h2",{},"Money Management"),T("default_payout","ডিফল্ট Payout (%)"),T("max_stake_pct","একটা ট্রেডে ব্যালেন্সের সর্বোচ্চ %")),
+  h("div",{class:"card"},h("h2",{},"টাকা ও রেফারেল"),T("ref_bonus_l1","রেফারেল বোনাস L1 (VIP প্রতি, $)"),T("ref_bonus_l2","রেফারেল বোনাস L2 (VIP প্রতি, $)"),T("ref_commission_l1_pct","ডিপোজিট কমিশন L1 (%)"),T("ref_commission_l2_pct","ডিপোজিট কমিশন L2 (%)"),T("ref_max_level","রেফারেল লেভেল (1 বা 2)"),
+   T("min_withdraw","ন্যূনতম Withdraw ($)"),T("daily_withdraw","দৈনিক Withdraw সীমা ($)"),T("withdraw_alert_hours","Withdraw কতক্ষণ পর অ্যালার্ট (ঘণ্টা)"),T("withdraw_hold_hours","কতক্ষণ পর স্বয়ংক্রিয় হোল্ড (ঘণ্টা)")),
+  h("div",{class:"card"},h("h2",{},"ডিপোজিট নম্বর"),X("deposit_accounts","JSON লিস্ট, যেমন [{\"method\":\"bKash\",\"account\":\"01XXXXXXXXX\",\"note\":\"Send Money\"}]")),
+  h("button",{class:"btn p",onclick:act(async()=>{const j={};for(const k in f)j[k]=f[k].value;await api("/api/admin/settings",j);say("সেভ হয়েছে")})},"সব সেটিংস সেভ করুন"),
+  h("div",{class:"card",style:"margin-top:12px"},h("h2",{},"Withdraw পদ্ধতি"),(A.d.wdm||[]).map(m=>h("div",{class:"it"},h("div",{class:"row sp"},h("b",{},m.name+(m.is_active?"":" (বন্ধ)")),h("span",{class:"mu"},"min "+$c(m.min_c)+" · max "+$c(m.max_c)+" · fee "+m.fee_pct+"%+"+$c(m.fee_flat_c))),
+    h("div",{class:"row",style:"margin-top:6px"},h("button",{class:"btn s",onclick:act(async()=>{const v=ask("নতুন সর্বোচ্চ ($) ও ফি % , কমা দিয়ে (যেমন 500,2)",(m.max_c/100)+","+m.fee_pct);if(!v)return;const[mx,fp]=v.split(",");await api("/api/admin/withdraw-methods/"+m.id,{max_c:Math.round(Number(mx)*100),fee_pct:Number(fp||0)},"PUT")})},"সম্পাদনা"),
+     h("button",{class:"btn s "+(m.is_active?"r":"g"),onclick:act(async()=>{await api("/api/admin/withdraw-methods/"+m.id,{is_active:!m.is_active},"PUT")})},m.is_active?"বন্ধ":"চালু")))),
+   h("button",{class:"btn s",style:"margin-top:8px",onclick:()=>{const n=ask("নাম (ইংরেজি, যেমন Rocket)");if(!n)return;const fj=ask("ফিল্ড JSON",'[{"label":"নম্বর","type":"tel","regex":"01[3-9]\\\\d{8}"}]');api("/api/admin/withdraw-methods",{name:n,fields_json:fj||"[]"}).then(()=>load()).catch(e=>say(e.message,true))}},"+ নতুন পদ্ধতি")),
+  h("div",{class:"card"},h("h2",{},"লোগো (PNG/JPG, ৩০০KB-এর মধ্যে)"),lg,h("button",{class:"btn s",onclick:act(async()=>{if(!lg.files[0])throw new Error("ছবি বাছুন");const fd=new FormData();fd.append("image",lg.files[0]);await api("/api/admin/logo",null,"POST",fd);say("লোগো বদলেছে")})},"লোগো আপলোড")),
+  h("div",{class:"card"},h("h2",{},"ব্যাকআপ"),h("div",{class:"mu"},"ডাটাবেসের কপি নিরাপদ জায়গায় রাখুন (সপ্তাহে একবার)"),h("button",{class:"btn p",style:"margin-top:8px",onclick:act(async()=>{const r=await fetch("/api/admin/backup",{headers:{Authorization:"Bearer "+A.tok}});if(!r.ok)throw new Error("ব্যাকআপ হয়নি");const b=await r.blob(),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="backup.db";a.click();say("ব্যাকআপ নামছে")})},"ব্যাকআপ ডাউনলোড")),
+  h("button",{class:"btn r",style:"width:100%;margin-top:12px",onclick:logout},"লগআউট")]}
+
+// ---------- more ----------
+function accountCard(){const cu=h("input",{placeholder:"নতুন আইডি (না বদলালে খালি রাখুন)",autocomplete:"off"}),cp=h("input",{type:"password",placeholder:"বর্তমান পাসওয়ার্ড",autocomplete:"current-password"}),np=h("input",{type:"password",placeholder:"নতুন পাসওয়ার্ড (১০+ অক্ষর, অক্ষর ও সংখ্যা)",autocomplete:"new-password"}),np2=h("input",{type:"password",placeholder:"নতুন পাসওয়ার্ড আবার লিখুন",autocomplete:"new-password"});
+ return h("div",{class:"card"},h("h2",{},"🔐 অ্যাডমিন আইডি ও পাসওয়ার্ড"),h("div",{class:"mu",style:"font-size:13px;margin-bottom:8px"},"নিরাপত্তার জন্য বর্তমান পাসওয়ার্ড লাগবে। বদলালে অন্য সব অ্যাডমিন লগইন বন্ধ হবে।"),cu,cp,np,np2,
+  h("button",{class:"btn p",style:"margin-top:10px",onclick:act(async()=>{if(np.value&&np.value!==np2.value)throw new Error("নতুন পাসওয়ার্ড দুটো মিলছে না");await api("/api/admin/account",{current:cp.value,username:cu.value.trim()||undefined,new_password:np.value||undefined});say("অ্যাডমিন তথ্য বদলানো হয়েছে")})},"সেভ করুন"))}
+function moreV(){const bi=h("textarea",{placeholder:"সবাইকে পাঠানোর বার্তা"}),ba=h("select",{},h("option",{value:"ALL"},"সবাই"),h("option",{value:"VIP"},"শুধু VIP"),h("option",{value:"FREE"},"শুধু FREE"));
+ const t=h("input",{placeholder:"শিরোনাম"}),b=h("textarea",{placeholder:"বার্তা"}),au=h("select",{},h("option",{value:"ALL"},"সবাই"),h("option",{value:"VIP"},"শুধু VIP"),h("option",{value:"FREE"},"শুধু FREE")),hr=h("input",{value:"24",inputmode:"numeric"});
+ return[h("h1",{},"আরও"),accountCard(),
+  h("div",{class:"card"},h("h2",{},"ব্রডকাস্ট মেসেজ"),bi,ba,h("button",{class:"btn p",onclick:act(async()=>{const r=await api("/api/admin/broadcast",{body:bi.value,audience:ba.value});say("পাঠানো হয়েছে: "+r.sent+" জন")})},"পাঠান")),
+  h("div",{class:"card"},h("h2",{},"নোটিশ"),t,b,au,h("div",{class:"mu"},"কত ঘণ্টা দেখাবে"),hr,h("button",{class:"btn p",onclick:act(async()=>{await api("/api/admin/notices",{title:t.value,body:b.value,audience:au.value,hours:hr.value});say("প্রকাশ হয়েছে")})},"প্রকাশ করুন"),
+   h("div",{style:"margin-top:10px"},(A.d.nt||[]).map(n=>h("div",{class:"row sp it"},h("span",{},n.title+" "),h("span",{class:"chip"},n.audience),h("button",{class:"btn s r",onclick:act(async()=>{await api("/api/admin/notices/"+n.id,null,"DELETE")})},"মুছুন"))))),
+  h("div",{class:"card"},h("h2",{},"Personal requests"),(A.d.reqs||[]).length?A.d.reqs.map(r=>h("div",{class:"it"},h("b",{},r.name+" · "+r.pair+" "+r.time_text),h("button",{class:"btn s g",style:"margin-left:8px",onclick:act(async()=>{const x=ask("উত্তর লিখুন");if(x)await api("/api/admin/requests/"+r.id,{reply:x})})},"উত্তর"))):h("div",{class:"mu"},"কিছু নেই")),
+  h("button",{class:"btn r",style:"width:100%",onclick:logout},"লগআউট")]}
+
+function draw(){const app=document.getElementById("app"),nav=document.getElementById("nav");app.replaceChildren();nav.replaceChildren();
+ if(!A.tok){nav.hidden=true;login(app);return}nav.hidden=false;
+ TABS.forEach(([k,l])=>nav.append(h("button",{class:A.tab===k?"on":"",onclick:()=>{A.tab=k;A.res="";load()}},l)));
+ if(A.res)app.append(h("div",{class:A.bad?"err":"ok",style:"margin-bottom:8px"},A.res));
+ const V={home:homeV,sig:sigV,users:usersV,wd:wdV,ref:refV,dep:depV,flags:flagsV,set:setV,more:moreV}[A.tab];
+ app.append(...V().flat(Infinity).filter(Boolean))}
+draw();if(A.tok)load();
+</script></body></html>
