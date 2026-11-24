@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1419"><title>Signal App</title>
+<style>
+:root{--bg:#0F1419;--sf:#1A222B;--ln:#2A3541;--tx:#E8EDF2;--mu:#9AA7B4;--gr:#3DDC97;--rd:#FF7B7B;--bl:#6AA5FF}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,"Noto Sans Bengali",sans-serif;padding-bottom:84px}
+#app{max-width:480px;margin:0 auto;padding:max(16px,env(safe-area-inset-top)) 16px 16px}
+h1{font-size:24px;margin:8px 0 14px}.mu{color:var(--mu)}.sm{font-size:13px}.gr{color:var(--gr)}.rd{color:var(--rd)}.bl{color:var(--bl)}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}.row>*{flex:1}
+button,input,select,textarea{font:inherit}textarea{min-height:90px;padding:10px 12px;resize:none;margin:4px 0 10px}input,select,textarea{width:100%;min-height:46px;background:var(--bg);border:1px solid var(--ln);border-radius:10px;color:var(--tx);padding:0 12px;margin:4px 0 10px}
+label{font-size:13px;color:var(--mu);display:block}
+.btn{min-height:46px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font-weight:600;padding:0 12px;width:100%;cursor:pointer}
+.btn.p{background:var(--gr);color:var(--bg);border:0}.btn.w{color:var(--gr)}.btn.l{color:var(--rd)}.btn:disabled{opacity:.5}
+.pair{font-size:30px;font-weight:700;line-height:1.1}.time{font-size:28px;font-weight:700;color:var(--bl)}.dir{font-size:26px;font-weight:700}
+.stake{font-size:26px;font-weight:700;margin-top:8px}.chip{display:inline-block;font-size:12px;font-weight:700;border-radius:8px;padding:2px 8px;background:var(--ln);margin:6px 6px 0 0}
+.chip.WIN{background:var(--gr);color:var(--bg)}.chip.LOSS{background:var(--rd);color:var(--bg)}
+.bar{height:8px;background:var(--bg);border-radius:4px;margin:4px 0 10px}.bar i{display:block;height:8px;border-radius:4px}
+.m1{border:2px solid var(--bl);border-radius:12px;padding:12px;margin-top:10px}.err{color:var(--rd);font-size:14px;margin:6px 0}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--sf);border-top:1px solid var(--ln);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;min-height:56px;background:none;border:0;border-top:3px solid transparent;color:var(--mu);font-size:11.5px;padding:0 2px}nav button.on{color:var(--gr);border-color:var(--gr);font-weight:700}
+.big{font-size:36px;font-weight:700}
+/* ---------- visual refresh ---------- */
+:root{--bg:#0A0E13;--sf:#131A22;--sf2:#1A232D;--ln:#243040;--tx:#EEF2F6;--mu:#8D9BAB;--gr:#34D399;--rd:#F87171;--bl:#60A5FA;--gold:#FBBF24}
+body{background:radial-gradient(900px 420px at 50% -180px,#17293d 0%,var(--bg) 62%) fixed,var(--bg);-webkit-font-smoothing:antialiased}
+#app{max-width:480px}
+h1{font-size:24px;font-weight:800;letter-spacing:-.3px;margin:12px 0 16px}
+.card{background:linear-gradient(180deg,var(--sf2),var(--sf));border:1px solid var(--ln);border-radius:18px;padding:16px;box-shadow:0 10px 28px rgba(0,0,0,.28);margin-bottom:14px}
+button.card:active{transform:scale(.99)}
+button.card{transition:transform .08s,border-color .2s}button.card:hover{border-color:#34506e}
+.btn{border-radius:14px;font-weight:700;transition:transform .08s,opacity .2s}
+.btn:active{transform:scale(.98)}
+.btn.p{background:linear-gradient(135deg,#34D399,#22C58B);color:#06120D;box-shadow:0 8px 20px rgba(52,211,153,.22)}
+.btn.w{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.35)}
+.btn.l{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.35)}
+input,select,textarea{background:#0E141B;border-radius:12px;border-color:#2B3848}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gr);box-shadow:0 0 0 3px rgba(52,211,153,.15)}
+.mu{color:var(--mu)}
+.chip{border-radius:999px;padding:3px 10px;font-size:11px;font-weight:800;letter-spacing:.3px}
+.chip.WIN{background:var(--gr)}.chip.LOSS{background:var(--rd)}
+.bar{height:10px;border-radius:999px;background:#0E141B}.bar i{border-radius:999px}
+.pair{font-size:28px;font-weight:800;letter-spacing:-.3px}
+.time{font-size:26px;font-weight:800}
+.dir{font-size:20px;font-weight:800;padding:6px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--ln)}
+.stake{font-size:30px;font-weight:800}
+.big{font-weight:800;letter-spacing:-.4px}
+.m1{border-radius:14px;border:1px dashed var(--bl);background:rgba(96,165,250,.06)}
+.err{font-size:14px}
+nav{background:rgba(19,26,34,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--ln);box-shadow:0 -8px 24px rgba(0,0,0,.25)}
+nav button{min-height:62px;font-size:11.5px;border-top:0;position:relative;color:var(--mu);letter-spacing:.1px}
+nav button.on{color:var(--gr);font-weight:800}
+nav button.on::before{content:"";position:absolute;top:0;left:28%;right:28%;height:3px;border-radius:0 0 6px 6px;background:var(--gr);box-shadow:0 2px 10px rgba(52,211,153,.5)}
+.seg{display:flex;background:#0E141B;border:1px solid var(--ln);border-radius:14px;padding:4px;gap:4px;margin-bottom:14px}
+.seg button{flex:1;background:none;border:0;color:var(--mu);min-height:42px;border-radius:10px;font-weight:700;font-size:14px}
+.seg button.on{background:linear-gradient(135deg,#34D399,#22C58B);color:#06120D}
+.lnk{background:none;border:0;color:var(--gr);font-weight:700;font-size:13.5px;padding:6px 2px}
+</style></head><body><div id="app"></div><nav id="nav" hidden></nav>
+<script>
+const S={token:localStorage.getItem("tk"),tab:"home",sub:null,notices:[],live_on:false,lg:{step:1,phone:""},ch:[],instr:"",showIns:false,busy:false,me:null,sig:[],mm:{plan:null},cfg:{},msg:"",ana:null};
+const $c=c=>(c<0?"−":"")+"$"+(Math.abs(c)/100).toFixed(2), $s=c=>(c>0?"+":"")+$c(c), rnd=x=>Math.floor(x+0.5);
+function h(t,p,...k){const e=document.createElement(t);for(const[a,v]of Object.entries(p||{})){if(a==="class")e.className=v;else if(a.startsWith("on"))e.addEventListener(a.slice(2),v);else if(v!==false&&v!=null)e.setAttribute(a,v)}
+ for(const x of k.flat()){if(x==null||x===false)continue;e.append(x.nodeType?x:document.createTextNode(String(x)))}return e}
+async function api(path,o={}){const hd={Authorization:"Bearer "+(S.token||"")};let body;
+ if(o.form){body=o.form}else if(o.json){hd["Content-Type"]="application/json";body=JSON.stringify(o.json)}
+ const r=await fetch(path,{method:o.method||(body?"POST":"GET"),headers:hd,body});let d={};try{d=await r.json()}catch(e){}
+ if(r.status===401&&S.token){logout();throw new Error(d.error||"আবার লগইন করুন")}if(!r.ok)throw new Error(d.error||"সমস্যা হয়েছে");return d}
+function logout(){lvStop(true);localStorage.removeItem("tk");S.token=null;S.me=null;S.cW=S.cR=S.cQ=S.cI=S.cD=S.cM=S.cB=S.cry=S.cryAt=undefined;S.depShot=null;S.wdPre=null;render()}
+function fon(k){const f=S.cfg.flags&&S.cfg.flags[k];return !f||f.on}
+function say(m){S.msg=m;render()}
+async function act(fn){try{S.msg="";await fn()}catch(e){S.msg=e.message}render()}
+async function refresh(){const[a,b,n]=await Promise.all([api("/api/signals"),api("/api/me"),api("/api/notices")]);S.sig=a.signals;S.now=a.now;S.mm=a.mm;S.live_on=a.live_on;S.me=b;S.notices=n.notices}
+function brand(){const c=S.cfg;return h("div",{style:"display:flex;align-items:center;gap:10px;margin-bottom:6px"},c.logo?h("img",{src:"/logo?v="+c.logo,alt:"",style:"width:34px;height:34px;border-radius:8px;object-fit:cover"}):null,h("b",{style:"font-size:17px"},c.app_name||"Signal App"))}
+const REF=()=>localStorage.getItem("ref")||undefined;
+// প্রতি ব্রাউজার-প্রোফাইলের একটা random id (localStorage-এ থাকে)। একই প্রোফাইলে দুটো অ্যাকাউন্ট ধরতে ব্যবহার হয়
+function fpId(){try{let v=localStorage.getItem("fp");if(!v){v=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36));localStorage.setItem("fp",v)}return v}catch(e){return ""}}
+function bar(l,v,pct,c){return h("div",{},h("div",{class:"row sm"},h("span",{class:"mu"},l),h("b",{style:"text-align:right;color:"+c},v)),h("div",{class:"bar"},h("i",{style:"width:"+Math.min(100,Math.max(0,pct))+"%;background:"+c})))}
+function planBars(m){const p=m.plan;return h("div",{class:"card"},h("b",{},"আজকের প্ল্যান"),h("div",{style:"height:8px"}),
+ bar("Profit target",$s(m.pnl_c)+" / "+$c(p.target_c),m.pnl_c/p.target_c*100,"var(--gr)"),
+ bar("Loss limit",$c(Math.min(0,m.pnl_c))+" / "+$c(p.limit_c),-m.pnl_c/p.limit_c*100,"var(--rd)"))}
+const stopMsg=m=>m.reason==="TARGET"?"আজকের target হয়ে গেছে। আজকের মতো থামুন, কাল নতুন প্ল্যান করুন।":"আজকের loss limit ছুঁয়েছে। আজকের মতো থামুন।";
+// ---------- screens ----------
+function setupGoogle(box){const go=b=>{google.accounts.id.initialize({client_id:S.cfg.google_client_id,callback:r=>act(async()=>{const d=await api("/api/auth/google",{json:{credential:r.credential,ref:REF(),fp:fpId()}});await start(d.token)})});google.accounts.id.renderButton(b,{theme:"filled_black",size:"large",width:280})};
+ S.gbox=box;if(window.google&&google.accounts)setTimeout(()=>go(S.gbox));else if(!S.gsi){S.gsi=1;const sc=document.createElement("script");sc.src="https://accounts.google.com/gsi/client";sc.onload=()=>go(S.gbox);document.head.append(sc)}}
+function loginView(){const c=S.cfg,L=S.lg,v=h("div",{});
+ if(c.maintenance)v.append(h("div",{class:"card rd"},c.maintenance_msg||"অ্যাপ এখন রক্ষণাবেক্ষণে আছে, একটু পরে আসুন"));
+ const modes=[];if(fon("login_phone"))modes.push(["phone","📱 ফোন"]);if(fon("login_email"))modes.push(["email","✉️ ইমেইল"]);
+ const ch=modes.some(m=>m[0]===L.ch)?L.ch:(modes[0]||[""])[0];const isPhone=ch==="phone";
+ const otpOk=isPhone?!!c.phone_login:!!c.email_login;const mode=L.mode||"login";
+ const go=m=>()=>{L.mode=m;L.step=1;L.code="";S.msg="";render()};
+ const reset=()=>{S.lg={ch,mode:"login",step:1,id:L.id||"",ps:"",code:""}};
+ const id=h("input",{type:isPhone?"tel":"email",inputmode:isPhone?"tel":"email",autocomplete:"username",placeholder:isPhone?"01XXXXXXXXX":"you@example.com",value:L.id||"",oninput:e=>{L.id=e.target.value}});
+ const pw=h("input",{type:"password",placeholder:mode==="login"?"পাসওয়ার্ড":"নতুন পাসওয়ার্ড (৮+ অক্ষর, অক্ষর ও সংখ্যা)",autocomplete:mode==="login"?"current-password":"new-password",value:L.ps||"",oninput:e=>{L.ps=e.target.value}});
+ const pw2=h("input",{type:"password",placeholder:"নতুন পাসওয়ার্ড আবার লিখুন",autocomplete:"new-password"});
+ const code=h("input",{inputmode:"numeric",maxlength:"6",placeholder:"৬ অঙ্কের কোড",value:L.code||"",oninput:e=>{L.code=e.target.value}});
+ const field=(l,el)=>h("div",{style:"margin-top:12px"},h("label",{class:"lb"},l),el);
+ const link=(t,fn)=>h("button",{class:"lnk",onclick:fn},t);
+ const sendOtp=purpose=>act(async()=>{L.id=id.value.trim();await api("/api/auth/otp/send",{json:{to:L.id,purpose}});L.step=2;L.code="";S.msg="কোড পাঠানো হয়েছে, মেয়াদ ৫ মিনিট"});
+ const verify=purpose=>act(async()=>{const p1=pw.value,p2=pw2.value;if(purpose!=="login"&&p1!==p2)throw new Error("দুটো পাসওয়ার্ড মিলছে না");
+   const d=await api("/api/auth/otp/verify",{json:{to:L.id,code:code.value.trim(),purpose,password:p1,ref:REF(),fp:fpId()}});reset();await start(d.token)});
+ const pwLogin=()=>act(async()=>{const d=await api("/api/auth/password",{json:{to:id.value.trim(),password:pw.value,ref:REF(),fp:fpId()}});reset();await start(d.token)});
+ const card=h("div",{class:"card"});
+ if(modes.length>1)card.append(h("div",{class:"seg"},modes.map(([k,l])=>h("button",{class:k===ch?"on":"",onclick:()=>{S.lg={ch:k,mode:"login",step:1,id:"",ps:"",code:""};S.msg="";render()}},l))));
+ if(!modes.length)card.append(h("div",{class:"err"},"এখন কোনো লগইন পদ্ধতি চালু নেই"));
+ else if(mode==="login"){
+   card.append(h("h2",{},isPhone?"ফোন নম্বর ও পাসওয়ার্ড দিয়ে ঢুকুন":"ইমেইল ও পাসওয়ার্ড দিয়ে ঢুকুন"),field(isPhone?"ফোন নম্বর":"ইমেইল",id),field("পাসওয়ার্ড",pw),
+     h("button",{class:"btn p",style:"margin-top:16px",onclick:pwLogin},"ঢুকুন"),
+     h("div",{class:"row",style:"justify-content:space-between;margin-top:6px;flex-wrap:wrap"},otpOk?link("OTP দিয়ে ঢুকুন",go("otp")):null,link("পাসওয়ার্ড ভুলে গেছেন?",go("forgot"))),
+     otpOk?h("div",{style:"text-align:center;margin-top:12px;border-top:1px solid var(--ln);padding-top:12px"},h("span",{class:"sm mu"},"নতুন ব্যবহারকারী? "),link("অ্যাকাউন্ট খুলুন",go("signup"))):null);
+ } else if(mode==="otp"||mode==="signup"||mode==="forgot"){
+   const purpose=mode==="otp"?"login":mode==="signup"?"signup":"reset";
+   const title={otp:"OTP দিয়ে ঢুকুন",signup:"নতুন অ্যাকাউন্ট খুলুন",forgot:"পাসওয়ার্ড রিসেট করুন"}[mode];
+   card.append(h("h2",{},title));
+   if(L.step!==2){
+     card.append(field(isPhone?"ফোন নম্বর":"ইমেইল",id),h("button",{class:"btn p",style:"margin-top:16px",onclick:()=>sendOtp(purpose)},"কোড পাঠান"));
+   } else {
+     card.append(h("div",{class:"sm mu"},"কোড পাঠানো হয়েছে: "+L.id),field("কোড",code));
+     if(mode!=="otp")card.append(field("নতুন পাসওয়ার্ড",pw),field("আবার লিখুন",pw2));
+     card.append(h("button",{class:"btn p",style:"margin-top:16px",onclick:()=>verify(purpose)},mode==="otp"?"যাচাই করে ঢুকুন":mode==="signup"?"অ্যাকাউন্ট খুলুন":"পাসওয়ার্ড সেট করুন"),
+       h("div",{class:"row",style:"justify-content:space-between;margin-top:8px"},link("নম্বর বদলান",()=>{L.step=1;L.code="";S.msg="";render()}),link("কোড আবার পাঠান",()=>sendOtp(purpose))));
+   }
+   card.append(h("div",{style:"text-align:center;margin-top:12px"},link("← লগইনে ফিরুন",go("login"))));
+ }
+ v.append(card);
+ if(c.google_client_id&&fon("login_google")){const box=h("div",{style:"display:flex;justify-content:center;min-height:44px"});v.append(h("div",{class:"card"},h("div",{class:"sm mu",style:"text-align:center;margin-bottom:8px"},"অথবা"),h("b",{},"Google / Gmail দিয়ে ঢুকুন"),h("div",{style:"height:8px"}),box));setupGoogle(box)}
+ if(c.dev_login){const n=h("input",{placeholder:"টেস্ট নাম"});v.append(h("div",{class:"card"},h("div",{class:"sm mu"},"ডেভ লগইন (শুধু টেস্টের জন্য)"),n,h("button",{class:"btn p",onclick:()=>act(async()=>{const d=await api("/api/auth/dev",{json:{name:n.value,ref:REF(),fp:fpId()}});await start(d.token)})},"ঢুকুন")))}
+ v.append(h("div",{class:"err"},S.msg),h("p",{class:"sm mu"},c.terms||"ট্রেডিংয়ে ঝুঁকি আছে। সিগন্যাল সম্ভাবনা মাত্র।"));return v}
+function homeView(){const st=S.me.stats,m=S.mm,v=h("div",{},h("h1",{},"আজকের সারাংশ"));
+ if(S.cfg.welcome)v.append(h("div",{class:"card sm",style:"white-space:pre-line"},S.cfg.welcome));
+ S.notices.forEach(n=>v.append(h("div",{class:"card",style:"border-color:var(--bl)"},h("b",{},n.title),h("div",{class:"sm",style:"white-space:pre-line;margin-top:4px"},n.body))));
+ if(S.me.status==="VIP")v.append(h("div",{class:"sm gr",style:"margin-bottom:8px"},"VIP সক্রিয়"+(S.me.vip_until?" · মেয়াদ "+new Date(S.me.vip_until).toLocaleDateString("bn-BD"):"")));
+ v.append(bigCard("Live ক্যাপচার","স্ক্রিন শেয়ার দিন, অ্যাপ চার্ট দেখে সিগন্যাল দেবে",()=>go("live")),bigCard("Future সিগন্যাল","অ্যাডমিনের সিগন্যাল সিরিয়াল মতো · স্ক্রিনশট দিয়েও সিগন্যাল নেওয়া যায়",()=>go("signals")),h("div",{class:"row"},bigCard("VIP নিন","কী কী লাগবে দেখুন",()=>openSub("vip")),bigCard("হেল্প","সাহায্য ও যোগাযোগ",()=>openSub("help"))));
+ v.append(h("div",{class:"card"},h("div",{class:"row"},h("div",{},h("div",{class:"sm mu"},"আপনার Real win rate"),h("div",{class:"big gr"},st.win_rate==null?"—":st.win_rate+"%")),h("div",{},h("div",{class:"sm mu"},"WIN / LOSS"),h("div",{class:"big"},st.wins+" / "+st.losses))),h("div",{class:"sm mu"},"শুধু আপনার নিজের ভোট থেকে হিসাব করা")));
+ if(!m.plan)v.append(h("div",{class:"card"},h("p",{},"আজকের Money Management প্ল্যান এখনো বানাননি।"),h("button",{class:"btn p",onclick:()=>go("money")},"প্ল্যান বানান")));
+ else{v.append(planBars(m));v.append(h("div",{class:"card"},m.action==="STOP"?h("b",{class:"rd"},stopMsg(m)):[h("div",{class:"sm mu"},m.action==="M1"?"M1 ভোট বাকি · stake":m.action==="REC"?"পরের ট্রেড (লস উঠাতে)":"পরের ট্রেডে stake"),h("div",{class:"stake"},$c(m.stake_c))]))}
+ v.append(h("div",{class:"sm mu",style:"text-align:center"},"এটা সম্ভাবনা, গ্যারান্টি নয়"));return v}
+function sigCard(s){const m=S.mm,p=m.plan,pay=p?p.payout/100:.88,late=S.now&&s.at<S.now;
+ const dirEl=s.locked?h("div",{class:"dir mu"},"VIP"):h("div",{class:"dir "+(s.direction==="UP"?"gr":"rd")},s.direction);
+ const c=h("div",{class:"card"},h("div",{class:"row"},h("div",{},h("div",{class:"pair"},s.locked?"VIP সিগন্যাল":s.pair),h("div",{class:"time"},s.time),late&&h("div",{class:"sm mu"},"সময় পেরিয়ে গেছে")),h("div",{style:"text-align:right"},dirEl)));
+ const chips=s.voted.map(t=>h("span",{class:"chip "+t.result},t.stage+" "+t.result+(t.result==="SKIP"?"":" "+$s(t.pnl_c))));if(chips.length)c.append(h("div",{},chips));
+ const vb=(l,r,cl)=>h("button",{class:"btn "+cl,onclick:()=>act(async()=>{S.mm=await api("/api/vote",{json:{signal_id:s.id,result:r}});await refresh()})},l);
+ const has=s.voted.some(t=>t.stage==="BASE"||t.stage==="REC");
+ if(s.locked)c.append(h("p",{class:"sm mu"},"VIP হলে এই সিগন্যাল দেখতে পারবেন"));
+ else if(m.action==="M1"&&m.m1_signal===s.id)c.append(h("div",{class:"m1"},h("b",{class:"bl"},"M1 ভোট খোলা"),h("div",{class:"stake bl"},$c(m.stake_c)),h("div",{class:"sm mu"},"M1 WIN হলে "+$s(rnd(m.stake_c*pay))+" · হারলে M2 আসবে না"),h("div",{class:"row",style:"margin-top:10px"},vb("M1 WIN","WIN","w"),vb("M1 LOSS","LOSS","l")),h("div",{style:"height:8px"}),vb("M1 নিইনি","SKIP","")));
+ else if(has){}
+ else if(!p)c.append(h("button",{class:"btn p",style:"margin-top:10px",onclick:()=>go("money")},"আগে আজকের প্ল্যান বানান"));
+ else if(m.action==="STOP")c.append(h("p",{class:"sm rd"},stopMsg(m)));
+ else if(m.action==="M1")c.append(h("p",{class:"sm mu"},"আগে M1 ভোট দিন"));
+ else c.append(h("div",{class:"sm mu",style:"margin-top:8px"},m.action==="REC"?"Stake (আগের লস উঠাতে)":"Stake"),h("div",{class:"stake"},$c(m.stake_c)),
+  h("div",{class:"sm mu"},"WIN হলে "+$s(rnd(m.stake_c*pay))+" · LOSS হলে "+$s(-m.stake_c)),h("div",{class:"row",style:"margin-top:10px"},vb("WIN","WIN","w"),vb("LOSS","LOSS","l"),vb("SKIP","SKIP","")));
+ return c}
+function signalsView(){const v=h("div",{},h("h1",{},"Future সিগন্যাল"));if(S.cfg.ai_on===true&&fon("ai_analyze"))v.append(bigCard("স্ক্রিনশট দিয়ে সিগন্যাল নিন","চার্টের ছবি দিন, AI বিশ্লেষণ করে UP/DOWN/WAIT বলবে",()=>go("analyze")));if(S.mm.plan)v.append(planBars(S.mm));
+ const fut=S.sig.filter(s=>s.kind!=="LIVE"),live=S.sig.filter(s=>s.kind==="LIVE");
+ if(S.live_on){v.append(h("b",{class:"rd",style:"display:block;margin:6px 0"},"● LIVE সিগন্যাল"));if(!live.length)v.append(h("div",{class:"card mu sm"},"লাইভ চালু আছে, সিগন্যালের অপেক্ষা করুন"));live.forEach(s=>v.append(sigCard(s)))}
+ v.append(h("b",{style:"display:block;margin:6px 0"},"আজকের Future সিগন্যাল"));if(!fut.length)v.append(h("div",{class:"card mu"},"এখনো কোনো সিগন্যাল আসেনি"));fut.forEach(s=>v.append(sigCard(s)));
+ v.append(h("div",{class:"err"},S.msg),h("div",{class:"sm mu",style:"text-align:center"},"এটা সম্ভাবনা, গ্যারান্টি নয়"));return v}
+function moneyView(){const m=S.mm;if(m.plan){const v=h("div",{},h("h1",{},"আজকের প্ল্যান"),planBars(m)),p=m.plan,pay=p.payout/100,m1=rnd(p.base_c/pay);
+  v.append(h("div",{class:"card"},[["Base stake",$c(p.base_c)],["প্রতি WIN-এ লাভ",$s(rnd(p.base_c*pay))],["Base হারলে M1",$c(m1)],["Base + M1 হারলে",$s(-(p.base_c+m1))],["সর্বোচ্চ stake ("+(S.cfg.max_stake_pct||5)+"%)",$c(p.balance_c*(S.cfg.max_stake_pct||5)/100)]].map(r=>h("div",{class:"row sm",style:"padding:6px 0"},h("span",{class:"mu"},r[0]),h("b",{style:"text-align:right"},r[1])))),
+  h("div",{class:"sm mu"},"আজকের প্ল্যান বদলানো যাবে না। কাল নতুন প্ল্যান বানাবেন।"));return v}
+ const f={};const fld=(k,l,d)=>{f[k]=h("input",{inputmode:"decimal",value:d,oninput:calc});return h("div",{},h("label",{},l),f[k])};
+ const pv=h("div",{class:"card sm"});const calc=()=>{const n=+f.n.value,pay=+f.payout.value/100,t=+f.target.value;const base=rnd(t*100/(n*pay)),m1=rnd(base/pay);
+  pv.textContent=isFinite(base)&&base>0?"প্রতি ট্রেডে stake "+$c(base)+" · প্রতি WIN-এ "+$s(rnd(base*pay))+" · Base হারলে M1 "+$c(m1)+" · Loss limit অন্তত "+$c(base+m1):"সংখ্যা দিন"};
+ const v=h("div",{},h("h1",{},"আজকের প্ল্যান"),h("div",{class:"row"},fld("balance","আজকের ব্যালেন্স ($)","100"),fld("payout","Payout (%)",String(S.cfg.default_payout||88))),h("div",{class:"row"},fld("target","Profit target ($)","5"),fld("limit","Loss limit ($)","6")),fld("n","কয়টা জেতা ট্রেডে target চান","5"),pv,
+  h("div",{class:"err"},S.msg),h("button",{class:"btn p",onclick:()=>act(async()=>{const j={};for(const k in f)j[k]=f[k].value;S.mm=await api("/api/mm",{json:j});await refresh()})},"আজকের প্ল্যান চালু করুন"),
+  h("p",{class:"sm mu"},"চালু করলে আজ আর বদলানো যাবে না। ৮৮% payout-এ ব্রেক-ইভেনে অন্তত ৫৩.২% জিততে হয়।"));calc();return v}
+function shrink(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),img=new Image();img.onload=()=>{const k=Math.min(1,1600/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);c.toBlob(b=>{URL.revokeObjectURL(u);b?res(b):rej(new Error("ছবি পড়া যায়নি"))},"image/jpeg",0.85)};img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error("ছবি পড়া যায়নি"))};img.src=u})}
+async function addCharts(files){S.msg="";for(const f of files){if(S.ch.length>=4){S.msg="সর্বোচ্চ ৪টি চার্ট দেওয়া যায়";break}try{const b=await shrink(f);S.ch.push({b,url:URL.createObjectURL(b)})}catch(e){S.msg=e.message}}render()}
+function newAnalysis(){S.ch.forEach(c=>URL.revokeObjectURL(c.url));S.ch=[];S.ana=null;S.instr="";S.showIns=false;S.msg="";render()}
+function analyzeView(){const pick=cap=>h("input",{type:"file",accept:"image/*",multiple:cap?null:"multiple",capture:cap?"environment":null,style:"display:none",onchange:e=>addCharts([...e.target.files])}),gal=pick(false),cam=pick(true),a=S.ana;
+ const v=h("div",{},h("button",{class:"btn",style:"width:auto;margin-bottom:8px",onclick:()=>go("signals")},"← সিগন্যাল"),h("h1",{},"স্ক্রিনশট থেকে সিগন্যাল"),
+  h("div",{class:"card"},h("b",{style:"font-size:18px"},"চার্ট যোগ করুন"),h("div",{class:"sm mu",style:"margin:4px 0 12px"},"একাধিক টাইমফ্রেমের চার্ট (সর্বোচ্চ ৪টি) দিলে ফল আরও নির্ভুল হয়"),
+   S.ch.length?h("div",{style:"display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px"},S.ch.map((c,i)=>h("div",{style:"position:relative"},h("img",{src:c.url,alt:"চার্ট "+(i+1),style:"width:100%;height:110px;object-fit:cover;border-radius:10px;border:1px solid var(--ln)"}),h("button",{class:"btn","aria-label":"মুছুন",style:"position:absolute;top:4px;right:4px;width:34px;min-height:34px;padding:0",onclick:()=>{URL.revokeObjectURL(c.url);S.ch.splice(i,1);render()}},"✕")))):null,
+   h("div",{class:"row"},h("button",{class:"btn",onclick:()=>cam.click()},"ক্যামেরা"),h("button",{class:"btn",onclick:()=>gal.click()},"গ্যালারি")),gal,cam));
+ if(S.showIns)v.append(h("div",{class:"card"},h("label",{},"নির্দেশনা (ঐচ্ছিক)"),h("textarea",{placeholder:"যেমন: EURUSD, ১ মিনিট expiry, OTC",oninput:e=>{S.instr=e.target.value.slice(0,300)}},S.instr)));
+ v.append(h("div",{class:"row"},h("button",{class:"btn",onclick:()=>{S.showIns=!S.showIns;render()}},"নির্দেশনা দিন"),
+  h("button",{class:"btn p",disabled:(!S.ch.length||S.busy)||null,onclick:()=>act(async()=>{S.busy=true;S.ana=null;render();try{const fd=new FormData();S.ch.forEach((c,i)=>fd.append("images",c.b,"chart"+i+".jpg"));fd.append("instruction",S.instr||"");S.ana=await api("/api/analyze",{form:fd})}finally{S.busy=false}})},S.busy?"বিশ্লেষণ চলছে…":"বিশ্লেষণ শুরু")),h("div",{class:"err",style:"margin-top:8px"},S.msg));
+ if(a)v.append(h("div",{class:"card",style:"margin-top:12px"},h("div",{class:"row"},h("b",{class:"mu"},"ফলাফল ("+a.charts+"টি চার্ট)"),h("b",{class:"big "+(a.signal==="UP"?"gr":a.signal==="DOWN"?"rd":"mu"),style:"text-align:right"},a.signal)),h("p",{},a.trend),h("ul",{},a.reasons.map(r=>h("li",{},r))),h("div",{class:"sm mu"},"আজ আর "+a.left+"টি বাকি · এটা সম্ভাবনা, গ্যারান্টি নয়"),h("button",{class:"btn",style:"margin-top:10px",onclick:newAnalysis},"নতুন বিশ্লেষণ")));return v}
+function sub(k){S.sub=k;S.msg="";S.cW=S.cR=S.cQ=S.cI=undefined;render()}
+function back(){S.sub=null;S.msg="";S.me&&refresh().then(render);render()}
+function once(key,path){if(S[key]===undefined){S[key]=null;api(path).then(x=>{S[key]=x;if(key==="cI"&&S.me)S.me.unread=0;render()}).catch(e=>{S[key]=false;S.err=e.message;render()})}return S[key]}
+const lnk=(href,txt,cl)=>/^https?:\/\//.test(href||"")?h("a",{href,target:"_blank",rel:"noopener noreferrer",class:"btn "+(cl||""),style:"display:flex;align-items:center;justify-content:center;text-decoration:none;margin-bottom:10px"},txt):null;
+const shell=(t,...k)=>h("div",{},h("button",{class:"btn",style:"width:auto;margin-bottom:8px",onclick:back},"← পেছনে"),h("h1",{},t),...k);
+const wait=(t,d)=>shell(t,h("div",{class:"card mu"},d===false?S.err:"লোড হচ্ছে…"));
+const kv=(l,v)=>h("div",{class:"row sm",style:"padding:5px 0"},h("span",{class:"mu"},l),h("b",{style:"text-align:right"},v));
+const when=t=>new Date(t).toLocaleString("bn-BD",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+function step(n,t,sub,st){const c={ok:"var(--gr)",now:"var(--bl)",todo:"var(--ln)"}[st];return h("div",{class:"row",style:"gap:12px;padding:9px 0;border-top:1px solid var(--ln);justify-content:flex-start"},h("div",{style:"width:30px;height:30px;border-radius:15px;background:"+c+";color:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700;flex:none"},n),h("div",{},h("div",{style:"font-weight:600"},t),h("div",{class:"sm mu"},sub)))}
+function vipView(){const u=S.me,inp=h("input",{inputmode:"numeric",placeholder:"Quotex UID"}),vip=u.status==="VIP",us=u.uid_status;
+ const stU={NONE:"জমা হয়নি",PENDING:"যাচাই অপেক্ষমাণ",APPROVED:"অনুমোদিত",REJECTED:"বাতিল, আবার দিন"}[us];
+ return shell("VIP হওয়ার ধাপ",lnk(S.cfg.quotex_link,"Quotex অ্যাকাউন্ট খুলুন","p"),
+  h("div",{class:"card"},step(1,"আমাদের লিংকে Quotex অ্যাকাউন্ট খুলুন","উপরের বাটন",us==="NONE"?"now":"ok"),step(2,"UID জমা দিন","অবস্থা: "+stU+(u.uid?" · "+u.uid:""),us==="APPROVED"?"ok":us==="PENDING"?"now":"todo"),step(3,S.cfg.vip_min_deposit_c>0?"ন্যূনতম ডিপোজিট "+$c(S.cfg.vip_min_deposit_c)+" ও ট্রেড":"নির্ধারিত ডিপোজিট ও ট্রেড","অ্যাডমিন যাচাই করে VIP চালু করবে",vip?"ok":"todo")),
+  (us==="NONE"||us==="REJECTED")&&h("div",{class:"card"},inp,h("button",{class:"btn p",onclick:()=>act(async()=>{await api("/api/uid",{json:{uid:inp.value}});await refresh()})},"UID জমা দিন"),h("div",{class:"sm mu",style:"margin-top:8px"},"একটা UID শুধু একটা অ্যাকাউন্টে লাগবে, জমার পর নিজে বদলানো যাবে না।")),
+  S.cfg.vip_info&&h("div",{class:"card sm",style:"white-space:pre-line"},S.cfg.vip_info),h("div",{class:"err"},S.msg),
+  h("div",{class:"sm mu"},"ডিপোজিট ও ট্রেডে টাকা হারানোর ঝুঁকি আছে। যা হারালে চলবে, শুধু তাই দিন।"))}
+const RSTC={PENDING:"⏳ অপেক্ষমাণ",APPROVED:"✅ যোগ হয়েছে",REJECTED:"❌ বাতিল"};
+const RCOL={PENDING:"mu",APPROVED:"gr",REJECTED:"rd"};
+function refView(){const d=once("cR","/api/referral");if(!d)return wait("রেফারেল",d);const L=location.origin+"/?ref="+d.code;
+ const txt="এই লিংকে Signal App-এ যোগ দিন: "+L;const s=d.summary;
+ const stat=(l,v,c)=>h("div",{},h("div",{class:"sm mu"},l),h("b",{class:c||"",style:"font-size:18px"},v));
+ return shell("রেফারেল",
+  h("div",{class:"card"},h("div",{class:"row",style:"justify-content:space-around"},stat("মোট",$c(s.total_c)),stat("অনুমোদিত",$c(s.approved_c),"gr"),stat("অপেক্ষমাণ",$c(s.pending_c)),stat("বাতিল",$c(s.rejected_c),"rd")),
+    h("div",{class:"sm mu",style:"margin-top:8px"},"বন্ধু VIP হলে বোনাস এখানে অপেক্ষমাণ দেখাবে, অ্যাডমিন অনুমোদন করলে ওয়ালেটে যোগ হবে। দ্বিতীয় স্তরের বন্ধুর VIP-তেও আপনি ছোট বোনাস পাবেন।")),
+  h("div",{class:"card"},h("div",{class:"sm mu"},"আপনার লিংক"),h("div",{style:"word-break:break-all;margin:6px 0 10px"},L),
+    h("button",{class:"btn p",onclick:()=>{navigator.clipboard&&navigator.clipboard.writeText(L);say("কপি হয়েছে")}},"লিংক কপি করুন"),
+    h("div",{class:"row",style:"margin-top:8px"},lnk("https://wa.me/?text="+encodeURIComponent(txt),"WhatsApp","") ,lnk("https://t.me/share/url?url="+encodeURIComponent(L)+"&text="+encodeURIComponent(txt),"Telegram","")),
+    h("div",{class:"sm gr"},S.msg)),
+  h("div",{class:"card"},kv("মোট বন্ধু","জন "+d.total),kv("VIP হয়েছে",d.approved+" জন"),kv("VIP বোনাস (L1 / L2)",$c(d.bonus_c)+" / "+$c(d.bonus_l2_c))),
+  h("div",{class:"card"},h("b",{},"সাম্প্রতিক আয়"),d.recent.length?d.recent.map(r=>h("div",{class:"sm",style:"padding:6px 0;border-top:1px solid var(--ln)"},
+     h("div",{class:"row"},h("span",{},(r.level===2?"L2 · ":"")+"বন্ধু "+r.from_name+" থেকে"),h("b",{class:RCOL[r.status]||"mu"},$c(r.amount_c))),
+     h("div",{class:"row"},h("span",{class:"mu"},when(r.created_at)),h("span",{class:RCOL[r.status]||"mu"},RSTC[r.status]||r.status)),
+     r.status==="REJECTED"&&r.review_note?h("div",{class:"rd"},"কারণ: "+r.review_note):null)):h("div",{class:"sm mu"},"এখনো কোনো আয় নেই")),
+  h("div",{class:"card"},h("b",{},"লিডারবোর্ড"),d.board.length?d.board.map((b,i)=>kv((i+1)+". "+b.name,b.count+" জন")):h("div",{class:"sm mu"},"এখনো কেউ নেই")))}
+const WSTC={PENDING:"অপেক্ষমাণ",PROCESSING:"প্রসেস হচ্ছে",ON_HOLD:"হোল্ডে",PAID:"পরিশোধিত",REJECTED:"বাতিল"};
+const DSTC={PENDING:"যাচাই অপেক্ষমাণ",APPROVED:"যাচাই হয়েছে",REJECTED:"বাতিল"};
+function walletView(){const d=once("cW","/api/wallet");if(!d)return wait("Wallet",d);
+ const ms=once("cM","/api/withdraw/methods"),bn=once("cB","/api/withdraw/beneficiaries");
+ if(!ms||!bn)return wait("Wallet",ms===false||bn===false?false:null);
+ const methods=ms.methods, cur=methods.find(m=>m.name===S.wdM)||methods[0];
+ const info=h("div",{class:"card"},h("div",{class:"sm mu"},"ব্যালেন্স"),h("div",{class:"big gr"},$c(d.balance_c)),
+   h("div",{class:"sm mu"},"ন্যূনতম "+$c(d.min_c)+" · দৈনিক সীমা "+$c(d.daily_c)),d.pending_ref_c>0?h("div",{class:"sm mu",style:"margin-top:4px"},"অপেক্ষমাণ রেফারেল: "+$c(d.pending_ref_c)+" (অনুমোদন হলে যোগ হবে)"):null);
+ if(S.cfg.withdraw_on===false||!fon("withdraw")) return shell("Wallet",info,h("div",{class:"card mu"},"Withdraw এখন বন্ধ আছে"));
+ const pre=S.wdPre||[];const inputs=cur?(cur.fields||[]).map((f,i)=>h("input",{placeholder:f.label,value:pre[i]||""})):[];
+ const amt=h("input",{inputmode:"decimal",placeholder:"পরিমাণ ($)"}),sv=h("input",{type:"checkbox",style:"width:auto;min-height:auto;margin:0 8px 0 0"});
+ const mSel=h("select",{onchange:e=>{S.wdM=e.target.value;S.wdPre=null;render()}},methods.map(m=>h("option",{value:m.name,selected:m.name===(cur&&cur.name)?"selected":null},m.name)));
+ const benes=bn.beneficiaries.length?bn.beneficiaries.map(b=>h("div",{class:"row sm",style:"padding:6px 0;border-top:1px solid var(--ln)"},h("span",{},b.method+" · "+(b.data.account||"")),h("span",{class:"row",style:"flex:none;gap:6px"},
+   h("button",{class:"btn",style:"width:auto;min-height:34px",onclick:()=>{S.wdM=b.method;S.wdPre=b.data.values||[];render()}},"ব্যবহার"),
+   h("button",{class:"btn l",style:"width:auto;min-height:34px",onclick:()=>act(async()=>{await api("/api/withdraw/beneficiaries/"+b.id,null,"DELETE");S.cB=undefined;S.msg="মুছে গেছে"})},"মুছুন")))):null;
+ const fee=cur&&(cur.fee_pct||cur.fee_flat_c)?h("div",{class:"sm mu"},"ফি: "+(cur.fee_pct?cur.fee_pct+"% ":"")+(cur.fee_flat_c?"+ "+$c(cur.fee_flat_c):"")+" · সর্বোচ্চ "+$c(cur.max_c)):null;
+ return shell("Wallet",info,
+  h("div",{class:"card"},h("b",{},"Withdraw রিকোয়েস্ট"),h("label",{style:"margin-top:8px"},"পদ্ধতি"),mSel,fee,amt,inputs,
+    h("label",{style:"display:flex;align-items:center;margin:6px 0"},sv,"এই নম্বরটি পরে ব্যবহারের জন্য সেভ করুন"),
+    h("div",{class:"err"},S.msg),
+    h("button",{class:"btn p",disabled:!cur||null,onclick:()=>act(async()=>{const values=inputs.map(x=>x.value);await api("/api/withdraw",{json:{amount:amt.value,method:cur.name,values,save_beneficiary:sv.checked}});S.cW=undefined;S.cB=undefined;S.wdPre=null;S.msg="রিকোয়েস্ট পাঠানো হয়েছে, অ্যাডমিন যাচাই করবে"})},"পাঠান")),
+  benes?h("div",{class:"card"},h("b",{},"সেভ করা নম্বর"),benes):null,
+  h("div",{class:"card"},h("b",{},"Withdraw ইতিহাস"),d.withdrawals.length?d.withdrawals.map(w=>kv($c(w.amount_c)+" · "+w.method+" · "+when(w.created_at),WSTC[w.status]||w.status)):h("div",{class:"sm mu"},"কিছু নেই")),
+  h("div",{class:"card"},h("b",{},"লেনদেন"),d.tx.length?d.tx.map(t=>kv((t.note||t.kind)+" · "+when(t.created_at),$s(t.amount_c))):h("div",{class:"sm mu"},"কিছু নেই")))}
+function depositView(){const d=once("cD","/api/deposit");if(!d)return wait("ডিপোজিট",d);
+ const amt=h("input",{inputmode:"decimal",placeholder:"পরিমাণ ($)"}),txn=h("input",{placeholder:"Transaction ID / TRX"});
+ const m=h("select",{},(d.accounts||[]).map(a=>h("option",{value:a.method},a.method+" · "+a.account)));
+ const file=h("input",{type:"file",accept:"image/*",onchange:e=>{const f=e.target.files[0];if(!f)return;
+   shrink(f).then(b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(b)})).then(x=>{S.depShot=x;S.msg="স্ক্রিনশট যোগ হয়েছে";render()}).catch(er=>{S.msg=er.message||"ছবি পড়া যায়নি";render()})}});
+ const hist=d.history.length?d.history.map(x=>kv($c(x.amount_c)+" · "+x.method+" · "+when(x.created_at),DSTC[x.status]||x.status)):h("div",{class:"sm mu"},"কিছু নেই");
+ return shell("ডিপোজিট",
+  h("div",{class:"card"},h("div",{class:"sm mu"},"নিচের নম্বরে টাকা পাঠিয়ে তথ্য দিন। অ্যাডমিন যাচাই করে ওয়ালেটে যোগ করবে।"),
+    d.accounts.length?d.accounts.map(a=>h("div",{class:"sm",style:"padding:6px 0"},h("b",{},a.method),h("div",{style:"word-break:break-all"},a.account),a.note?h("div",{class:"mu"},a.note):null)):h("div",{class:"sm mu"},"এখন কোনো ডিপোজিট নম্বর দেওয়া নেই"),
+    d.min_c>0?h("div",{class:"sm mu"},"ন্যূনতম ডিপোজিট "+$c(d.min_c)):null),
+  h("div",{class:"card"},h("label",{},"পদ্ধতি"),m,amt,txn,h("label",{},"পেমেন্টের স্ক্রিনশট (ঐচ্ছিক)"),file,S.depShot?h("div",{class:"sm gr"},"✓ স্ক্রিনশট প্রস্তুত"):null,
+    h("div",{class:"err"},S.msg),
+    h("button",{class:"btn p",disabled:!d.accounts.length||null,onclick:()=>act(async()=>{await api("/api/deposit",{json:{amount:amt.value,method:m.value,txn_ref:txn.value,screenshot:S.depShot||""}});S.cD=undefined;S.depShot=null;S.msg="ডিপোজিট রিকোয়েস্ট পাঠানো হয়েছে, অ্যাডমিন যাচাই করবে"})},"পাঠান")),
+  h("div",{class:"card"},h("b",{},"আগের ডিপোজিট"),hist))}
+function reqView(){const d=once("cQ","/api/request");if(!d)return wait("Personal Request",d);const p=h("input",{placeholder:"পেয়ার, যেমন EURUSD"}),t=h("input",{placeholder:"সময়, যেমন 14:30"});
+ return shell("Personal Request",h("div",{class:"card"},h("div",{class:"sm mu"},"আপনার পছন্দের পেয়ার ও সময় দিন, অ্যাডমিন উত্তর দেবে"+(d.vip_only?" (শুধু VIP)":"")+" · দিনে "+d.limit+"টি"),p,t,h("div",{class:"err"},S.msg),h("button",{class:"btn p",onclick:()=>act(async()=>{await api("/api/request",{json:{pair:p.value,time:t.value}});S.cQ=undefined;S.msg="রিকোয়েস্ট গেছে"})},"রিকোয়েস্ট পাঠান")),
+  h("div",{class:"card"},h("b",{},"আপনার রিকোয়েস্ট"),d.requests.length?d.requests.map(r=>h("div",{class:"sm",style:"padding:6px 0;border-top:1px solid var(--ln)"},h("b",{},r.pair+" "+r.time_text),h("div",{class:r.reply?"gr":"mu"},r.reply||"অপেক্ষমাণ"))):h("div",{class:"sm mu"},"কিছু নেই")))}
+function inboxView(){const d=once("cI","/api/messages");if(!d)return wait("মেসেজ",d);
+ return shell("মেসেজ",d.messages.length?d.messages.map(m=>h("div",{class:"card"},h("div",{style:"white-space:pre-line"},m.body),h("div",{class:"sm mu"},when(m.created_at)))):h("div",{class:"card mu"},"কোনো মেসেজ নেই"))}
+const SUBFLAG={wallet:"withdraw",dep:"deposit",req:"personal_req",ref:"referral"};
+function pwView(){const cur=h("input",{type:"password",placeholder:"বর্তমান পাসওয়ার্ড (আগে থাকলে)",autocomplete:"current-password"}),n1=h("input",{type:"password",placeholder:"নতুন পাসওয়ার্ড",autocomplete:"new-password"}),n2=h("input",{type:"password",placeholder:"নতুন পাসওয়ার্ড আবার লিখুন",autocomplete:"new-password"});
+ return shell("পাসওয়ার্ড",h("div",{class:"card"},h("p",{class:"sm mu"},"কমপক্ষে ৮ অক্ষর, ইংরেজি অক্ষর ও সংখ্যা দুটোই থাকতে হবে। বদলালে অন্য ডিভাইসের লগইন বাতিল হবে।"),cur,n1,n2,h("div",{class:"err"},S.msg),h("button",{class:"btn p",style:"margin-top:12px",onclick:()=>act(async()=>{if(n1.value!==n2.value)throw new Error("দুটো পাসওয়ার্ড মিলছে না");await api("/api/auth/password/change",{json:{current:cur.value,new:n1.value}});S.msg="পাসওয়ার্ড বদলানো হয়েছে"})},"সেভ করুন")))}
+function profileView(){if(S.sub){const sf=SUBFLAG[S.sub];if(sf&&!fon(sf))return shell("বন্ধ আছে",h("div",{class:"card rd"},(S.cfg.flags[sf]||{}).msg||"এই ফিচার এখন বন্ধ আছে"));return{vip:vipView,ref:refView,wallet:walletView,dep:depositView,req:reqView,inbox:inboxView,help:helpView,pw:pwView}[S.sub]()}const u=S.me;
+ const it=(l,k,b)=>h("button",{class:"btn",style:"display:flex;justify-content:space-between;align-items:center;margin-bottom:8px",onclick:()=>sub(k)},h("span",{},l),b?h("span",{class:"chip WIN"},b):null);
+ return h("div",{},h("h1",{},"প্রোফাইল"),h("div",{class:"card"},h("b",{},u.name),h("div",{class:"sm mu"},"স্ট্যাটাস: "+u.status+" · Warning: "+u.warnings+" / ৩")),
+  it("VIP ও Quotex UID","vip"),S.cfg.referral_on===false?null:it("রেফারেল","ref"),it("Wallet ও Withdraw","wallet"),it("ডিপোজিট","dep"),it("Personal Request","req"),it("মেসেজ","inbox",u.unread||""),it("পাসওয়ার্ড ও লগইন","pw"),it("হেল্প","help"),lnk(S.cfg.telegram,"Telegram সাপোর্ট"),h("button",{class:"btn",onclick:logout},"লগআউট"))}
+function fmtP(p){return p>=100?p.toFixed(2):p>=1?p.toFixed(4):Number(p.toPrecision(4)).toString()}
+function cryCard(it){const buy=it.side==="BUY",col=buy?"gr":"rd",pc=x=>((x-it.price)/it.price*100).toFixed(1);
+ const row=(l,v,c)=>h("div",{class:"row sm",style:"padding:5px 0"},h("span",{class:"mu"},l),h("b",{class:c||"",style:"text-align:right"},v));
+ return h("div",{class:"card"},h("div",{class:"row"},h("div",{},h("div",{class:"pair"},it.symbol),h("div",{class:"sm mu"},"১ ঘণ্টার চার্ট · RSI "+it.rsi+" · ভলিউম "+it.vol_x+"x")),h("div",{style:"text-align:right"},h("div",{class:"dir "+col},it.side))),
+  h("div",{style:"margin-top:8px"},row("এন্ট্রি (এখনকার দাম)",fmtP(it.price)),row("Stop Loss",fmtP(it.sl)+" ("+pc(it.sl)+"%)","rd"),row("Take Profit",fmtP(it.tp)+" ("+(it.tp>=it.price?"+":"")+pc(it.tp)+"%)","gr")),
+  h("div",{class:"sm mu",style:"margin-top:6px"},it.reasons.map(r=>"• "+r).join("  ")))}
+function cryptoView(){const v=h("div",{},h("h1",{},"ক্রিপ্টো সিগন্যাল"));
+ if(S.cry===undefined){S.cry=null;api("/api/crypto").then(d=>{S.cry=d;S.cryAt=Date.now();render()}).catch(e=>{S.cry=false;S.cerr=e.message;render()})}
+ if(S.cry===null){v.append(h("div",{class:"card mu"},"বাজারের ডেটা আনা হচ্ছে…"));return v}
+ if(S.cry===false){v.append(h("div",{class:"err"},S.cerr),h("button",{class:"btn",onclick:()=>{S.cry=undefined;render()}},"আবার চেষ্টা করুন"));return v}
+ const d=S.cry,b=d.backtest,t=new Date(d.updated*1000).toLocaleTimeString("bn-BD",{hour:"2-digit",minute:"2-digit"});
+ v.append(h("div",{class:"sm mu",style:"margin:-8px 0 10px"},"আসল এক্সচেঞ্জ ডেটা ("+d.source+") · আপডেট "+t+" · প্রতি ঘণ্টায় নতুন সেটআপ"));
+ if(!d.items.length)v.append(h("div",{class:"card"},h("b",{},"এখন কোনো পরিষ্কার সেটআপ নেই"),h("div",{class:"sm mu"},"৫টা শর্ত একসাথে না মিললে অ্যাপ BUY/SELL দেয় না। অপেক্ষা করাও একটা সিদ্ধান্ত।")));
+ d.items.forEach(it=>v.append(it.locked?h("div",{class:"card"},h("div",{class:"pair mu"},it.symbol),h("div",{class:"sm mu"},"সিগন্যাল আছে, VIP হলে দেখতে পারবেন")):cryCard(it)));
+ if(d.watch.length)v.append(h("div",{class:"card"},h("b",{},"নজরে রাখুন (৪/৫ শর্ত)"),d.watch.map(w=>h("div",{class:"sm",style:"padding:6px 0;border-top:1px solid var(--ln)"},h("b",{class:w.side==="BUY"?"gr":"rd"},w.symbol+" "+w.side),h("span",{class:"mu"}," · বাকি: "+w.missing.join(", "))))));
+ v.append(h("div",{class:"card"},h("b",{},"এই নিয়মের অতীত ফল"),h("div",{class:"sm",style:"margin-top:6px;line-height:1.6"},"গত ~"+b.hours+" ঘণ্টায় একই নিয়মে "+b.signals+"টি সিগন্যাল হতো: TP আগে "+b.tp+", SL আগে "+b.sl+", সময় শেষ "+b.timeout+"। TP আগে লাগার হার: "+(b.win_rate==null?"—":b.win_rate+"%")),
+  h("div",{class:"sm mu",style:"margin-top:6px"},"১:২ হিসাবে ফি বাদেও লাভে থাকতে অন্তত "+b.breakeven+"% লাগে। অতীত ফল ভবিষ্যতের নিশ্চয়তা নয়।")));
+ v.append(h("div",{class:"card sm mu",style:"line-height:1.6"},"• প্রতি ট্রেডে ব্যালেন্সের ১–২%-এর বেশি ঝুঁকি নেবেন না, Stop Loss ছাড়া ট্রেড নয়।",h("br"),"• SELL মানে কয়েন থাকলে বেচা, অথবা Futures-এ short। Spot-এ কয়েন না থাকলে এড়িয়ে যান।",h("br"),"• এটা সম্ভাবনা, গ্যারান্টি নয় এবং আর্থিক পরামর্শ নয়।"));return v}
+// ---------- home cards, help ----------
+function bigCard(t,sub,fn){return h("button",{class:"card",style:"width:100%;text-align:left;cursor:pointer;color:var(--tx);display:block;font:inherit",onclick:fn},h("div",{style:"font-size:19px;font-weight:700"},t),h("div",{class:"sm mu",style:"margin-top:4px"},sub))}
+function openSub(k){S.tab="profile";sub(k)}
+function helpView(){return shell("হেল্প",h("div",{class:"card",style:"white-space:pre-line"},S.cfg.help_text||"অ্যাডমিন এখনো হেল্প লেখেননি"),lnk(S.cfg.telegram,"Telegram-এ যোগাযোগ","p"),h("div",{class:"card sm mu"},"অ্যাডমিনের উত্তর পেতে 'মেসেজ' দেখুন। VIP নিতে চাইলে 'VIP ও Quotex UID' খুলুন।"))}
+// ---------- Live ক্যাপচার: স্ক্রিন শেয়ার থেকে ক্যান্ডেল পড়া ----------
+function pxColor(r,g,b){const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;if(mx<90||d<60)return 0;let hh;if(mx===r)hh=((g-b)/d+6)%6;else if(mx===g)hh=(b-r)/d+2;else hh=(r-g)/d+4;hh*=60;
+ if(hh>=85&&hh<=175&&g>=r+30)return 1;if((hh<=32||hh>=340)&&r>=g+60)return -1;return 0}
+function readCandles(px,W,H,reg){const x0=Math.floor(W*(reg.left||0)),x1=Math.floor(W*reg.right),y0=Math.floor(H*reg.top),y1=Math.floor(H*reg.bottom),cols=[];
+ for(let x=x0;x<x1;x++){let gc=0,rc=0,gmin=1e9,gmax=-1,rmin=1e9,rmax=-1;for(let y=y0;y<y1;y++){const i=(y*W+x)*4,c=pxColor(px[i],px[i+1],px[i+2]);if(c===1){gc++;if(y<gmin)gmin=y;if(y>gmax)gmax=y}else if(c===-1){rc++;if(y<rmin)rmin=y;if(y>rmax)rmax=y}}
+  cols.push(gc>=2&&gc>=rc?{c:1,a:gmin,b:gmax}:rc>=2?{c:-1,a:rmin,b:rmax}:null)}
+ const runs=[];let cur=null;cols.forEach((k,i)=>{if(k&&cur&&cur.c===k.c&&cur.end===i-1){cur.end=i;cur.cols.push(k)}else{if(cur)runs.push(cur);cur=k?{c:k.c,start:i,end:i,cols:[k]}:null}});if(cur)runs.push(cur);
+ const ws=runs.map(r=>r.end-r.start+1).filter(w=>w>=3).sort((a,b)=>a-b);if(!ws.length)return[];const med=ws[Math.floor(ws.length/2)];
+ return runs.filter(r=>{const w=r.end-r.start+1;return w>=Math.max(3,med*0.6)&&w<=med*1.8}).map(r=>{const q=Math.max(1,Math.floor(r.cols.length/4)),edge=r.cols.slice(0,q).concat(r.cols.slice(-q));
+  return{x0:x0+r.start,x1:x0+r.end,color:r.c,top:Math.min(...edge.map(k=>k.a)),bottom:Math.max(...edge.map(k=>k.b)),wickTop:Math.min(...r.cols.map(k=>k.a)),wickBot:Math.max(...r.cols.map(k=>k.b))}})}
+function judge(cs){const R={signal:"WAIT",reasons:[],n:cs.length};if(cs.length<9){R.reasons=["চার্টে পরিষ্কার ক্যান্ডেল কম ("+cs.length+"টি)। চার্ট জুম করে এলাকা ঠিক করুন"];return R}
+ const cl=cs.slice(0,-1).slice(-8),mean=a=>a.reduce((x,y)=>x+y,0)/a.length,mid=cl.map(k=>(k.top+k.bottom)/2),avg=mean(cl.map(k=>Math.max(2,k.bottom-k.top))),shift=(mean(mid.slice(-3))-mean(mid.slice(0,3)))/avg;
+ const last=cl[cl.length-1],g4=cl.slice(-4).filter(k=>k.color>0).length,r4=4-g4,big=(last.bottom-last.top)>2.5*avg;
+ if(shift<=-1.2&&last.color>0&&g4>=3){if(big){R.reasons=["বড় ক্যান্ডেলের পর তাড়াহুড়ো না করে অপেক্ষা"];return R}R.signal="UP";R.reasons=["শেষ ৮টি বন্ধ ক্যান্ডেলে দাম উপরের দিকে","শেষ ৪টির "+g4+"টি সবুজ","শেষ বন্ধ ক্যান্ডেল সবুজ"];return R}
+ if(shift>=1.2&&last.color<0&&r4>=3){if(big){R.reasons=["বড় ক্যান্ডেলের পর তাড়াহুড়ো না করে অপেক্ষা"];return R}R.signal="DOWN";R.reasons=["শেষ ৮টি বন্ধ ক্যান্ডেলে দাম নিচের দিকে","শেষ ৪টির "+r4+"টি লাল","শেষ বন্ধ ক্যান্ডেল লাল"];return R}
+ R.reasons=["ট্রেন্ড ও ক্যান্ডেল একসাথে মিলছে না, অপেক্ষা করুন"];return R}
+const LV={on:false,stream:null,timer:null,top:.22,bottom:.72,right:.86,last:null,prev:null,busy:false,tid:null,ai:null,err:"",el:{}};
+function liveEls(){if(!LV.vid){LV.vid=document.createElement("video");LV.vid.muted=true;LV.vid.setAttribute("playsinline","");LV.vid.setAttribute("style","position:fixed;left:0;top:0;width:2px;height:2px;opacity:0;pointer-events:none");document.body&&document.body.append(LV.vid);LV.cv=document.createElement("canvas");LV.cv.setAttribute("style","width:100%;border-radius:10px;background:#000;display:block;margin:8px 0")}}
+async function lvStart(){liveEls();LV.err="";try{const st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:5},audio:false});LV.stream=st;LV.vid.srcObject=st;await LV.vid.play();st.getVideoTracks()[0].addEventListener("ended",()=>lvStop());LV.on=true;LV.timer=setInterval(lvTick,3000);setTimeout(lvTick,600)}catch(e){LV.err="স্ক্রিন শেয়ার চালু হয়নি। অনুমতি দিন আর আবার চেষ্টা করুন"}render()}
+function lvStop(quiet){clearInterval(LV.timer);if(LV.stream)LV.stream.getTracks().forEach(t=>t.stop());LV.stream=null;if(LV.vid)LV.vid.srcObject=null;LV.on=false;LV.last=null;LV.prev=null;if(!quiet)render()}
+function lvPaint(res){const E=LV.el;if(!E||!E.sig)return;E.sig.textContent=res.signal;E.sig.className="big "+(res.signal==="UP"?"gr":res.signal==="DOWN"?"rd":"mu");E.why.textContent=res.reasons.join(" • ")}
+function lvTick(){const v=LV.vid;if(!LV.on||!v||!v.videoWidth)return;const W=Math.min(960,v.videoWidth),H=Math.round(W*v.videoHeight/v.videoWidth),c=LV.work||(LV.work=document.createElement("canvas"));c.width=W;c.height=H;const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(v,0,0,W,H);
+ const reg={top:LV.top,bottom:Math.max(LV.bottom,LV.top+.1),left:0,right:LV.right},cs=readCandles(x.getImageData(0,0,W,H).data,W,H,reg),res=judge(cs);LV.last=res;
+ const y0=Math.floor(H*reg.top),w=Math.floor(W*reg.right),hh=Math.floor(H*(reg.bottom-reg.top));LV.cv.width=w;LV.cv.height=hh;const p=LV.cv.getContext("2d");p.drawImage(c,0,y0,w,hh,0,0,w,hh);p.lineWidth=1;cs.forEach(k=>{p.strokeStyle=k.color>0?"#3DDC97":"#FF7B7B";p.strokeRect(k.x0,k.wickTop-y0,k.x1-k.x0,k.wickBot-k.wickTop)});
+ lvPaint(res);if(res.signal!==LV.prev&&res.signal!=="WAIT"&&navigator.vibrate)navigator.vibrate(200);LV.prev=res.signal}
+async function lvDeep(){if(!LV.on||LV.busy)return;LV.busy=true;LV.err="";render();try{const v=LV.vid,W=Math.min(1280,v.videoWidth),H=Math.round(W*v.videoHeight/v.videoWidth),c=document.createElement("canvas");c.width=W;c.height=H;c.getContext("2d").drawImage(v,0,0,W,H);
+  const b=await new Promise(r=>c.toBlob(r,"image/jpeg",0.85)),fd=new FormData();fd.append("images",b,"live.jpg");fd.append("instruction","লাইভ স্ক্রিন শেয়ার থেকে নেওয়া চার্ট");LV.ai=await api("/api/analyze",{form:fd})}catch(e){LV.err=e.message}LV.busy=false;render()}
+function lvVote(res){return act(async()=>{const m=S.mm,id=m.action==="M1"?m.m1_signal:(LV.tid||(LV.tid=-(Date.now()*1000+Math.floor(Math.random()*1000))));S.mm=await api("/api/vote",{json:{signal_id:id,result:res}});if(S.mm.action!=="M1")LV.tid=null})}
+function lvMM(){const m=S.mm,p=m.plan,pay=p?p.payout/100:.88,vb=(l,r,cl)=>h("button",{class:"btn "+cl,onclick:()=>lvVote(r)},l);
+ if(!p)return h("div",{class:"card"},h("div",{class:"sm mu"},"Money Management"),h("button",{class:"btn p",style:"margin-top:8px",onclick:()=>go("money")},"আগে আজকের প্ল্যান বানান"));
+ if(m.action==="STOP")return h("div",{class:"card sm rd"},stopMsg(m));
+ if(m.action==="M1")return h("div",{class:"card"},h("div",{class:"m1"},h("b",{class:"bl"},"M1 ভোট খোলা"),h("div",{class:"stake bl"},$c(m.stake_c)),h("div",{class:"sm mu"},"M1 WIN হলে "+$s(rnd(m.stake_c*pay))+" · হারলে M2 আসবে না"),h("div",{class:"row",style:"margin-top:10px"},vb("M1 WIN","WIN","w"),vb("M1 LOSS","LOSS","l")),h("div",{style:"height:8px"}),vb("M1 নিইনি","SKIP","")),h("div",{class:"err"},S.msg));
+ return h("div",{class:"card"},h("div",{class:"sm mu"},m.action==="REC"?"পরের ট্রেডের stake (আগের লস উঠাতে)":"পরের ট্রেডের stake"),h("div",{class:"stake"},$c(m.stake_c)),h("div",{class:"sm mu"},"WIN হলে "+$s(rnd(m.stake_c*pay))+" · LOSS হলে "+$s(-m.stake_c)),h("div",{class:"sm mu",style:"margin:6px 0"},"ট্রেড নেওয়ার পর ফল এখানে দিন"),h("div",{class:"row"},vb("WIN","WIN","w"),vb("LOSS","LOSS","l"),vb("SKIP","SKIP","")),h("div",{class:"err"},S.msg))}
+function liveView(){liveEls();const E=LV.el={},sup=!!(navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia);
+ const sl=(k,l,min,max)=>h("div",{},h("div",{class:"sm mu"},l),h("input",{type:"range",min,max,value:Math.round(LV[k]*100),style:"min-height:30px;padding:0",oninput:e=>{LV[k]=e.target.value/100}}));
+ const ai=LV.ai?h("div",{style:"margin-top:8px"},h("b",{class:LV.ai.signal==="UP"?"gr":LV.ai.signal==="DOWN"?"rd":"mu"},"AI: "+LV.ai.signal),h("div",{class:"sm"},LV.ai.trend),h("div",{class:"sm mu"},LV.ai.reasons.join(" • ")+" · আজ আর "+LV.ai.left+"টি বাকি")):null;
+ const v=h("div",{},h("h1",{},"Live ক্যাপচার"),
+  h("div",{class:"card"},h("div",{class:"sm mu",style:"margin-bottom:10px"},"স্ক্রিন শেয়ার দিন, অ্যাপ আপনার স্ক্রিনের চার্টের ক্যান্ডেল দেখে সিগন্যাল দেবে। কোনো লগইন বা অন্য তথ্য নেওয়া হয় না।"),
+   sup?h("button",{class:"btn "+(LV.on?"l":"p"),onclick:()=>LV.on?lvStop():lvStart()},LV.on?"স্ক্রিন শেয়ার বন্ধ করুন":"স্ক্রিন শেয়ার শুরু"):h("div",{class:"err"},"এই ব্রাউজারে স্ক্রিন শেয়ার চলে না (Android ফোনের ব্রাউজারে নেই)। কম্পিউটারের Chrome/Edge-এ খুলুন। ফোনের জন্য Android অ্যাপ আলাদা করে আসছে।"),h("div",{class:"err"},LV.err)),
+  h("div",{class:"card"},h("div",{class:"row"},h("b",{class:"mu"},"আনুমানিক পাঠ"),E.sig=h("b",{class:"big mu",style:"text-align:right"},"—")),E.why=h("div",{class:"sm mu",style:"margin-top:6px"},LV.on?"পড়া হচ্ছে…":"স্ক্রিন শেয়ার শুরু করুন"),
+   h("div",{class:"sm mu",style:"margin-top:6px"},"ছবি পড়ে বোঝা আনুমানিক পাঠ, গ্যারান্টি নয়। নিশ্চিত হতে গভীর বিশ্লেষণ নিন (দৈনিক লিমিট আছে)।"),
+   h("button",{class:"btn",style:"margin-top:10px",disabled:(!LV.on||LV.busy)||null,onclick:lvDeep},LV.busy?"বিশ্লেষণ চলছে…":"গভীর বিশ্লেষণ (AI)"),ai),
+  h("div",{class:"card"},h("div",{class:"sm mu"},"চার্টের এলাকা ঠিক করুন, সবুজ/লাল বাক্স ক্যান্ডেলের সাথে মিলছে কি না দেখুন"),LV.cv,sl("top","উপরের সীমা",0,60),sl("bottom","নিচের সীমা",30,100),sl("right","ডানের সীমা (দামের স্কেল বাদ দিন)",40,100)),lvMM());
+ if(LV.last)lvPaint(LV.last);return v}
+// ---------- shell ----------
+const TABS=[["home","🏠 হোম"],["live","📡 Live"],["signals","📊 সিগন্যাল"],["money","💰 Money"],["profile","☰ আরও"]];
+function go(t){S.sub=null;S.msg="";LV.err="";if(t==="crypto"&&(!S.cryAt||Date.now()-S.cryAt>300000))S.cry=undefined;S.tab=t;S.msg="";render()}
+const FLAG_OF={live:"signals_live",signals:"signals_future",analyze:"ai_analyze",money:"money_mgmt",crypto:"signals_crypto",req:"personal_req",wallet:"withdraw",dep:"deposit"};
+function render(){const app=document.getElementById("app"),nav=document.getElementById("nav");app.replaceChildren();nav.replaceChildren();document.title=S.cfg.app_name||"Signal App";app.append(brand());
+ if(!S.token||!S.me){nav.hidden=true;app.append(loginView());return}nav.hidden=false;
+ (S.cfg.banners||[]).forEach(b=>app.append(h("div",{class:"card",style:"border-color:var(--bl)"},h("b",{},b.title),h("div",{class:"sm",style:"white-space:pre-line;margin-top:4px"},b.msg))));
+ const tabs=TABS.slice();if(S.cfg.crypto_on===true)tabs.splice(3,0,["crypto","₿ ক্রিপ্টো"]);tabs.forEach(([k,l])=>nav.append(h("button",{class:(S.tab===k||(k==="signals"&&S.tab==="analyze"))?"on":"",onclick:()=>go(k)},l)));
+ const key=S.tab==="analyze"?"analyze":S.tab;const f=FLAG_OF[key]&&S.cfg.flags&&S.cfg.flags[FLAG_OF[key]];
+ if(f&&!f.on){app.append(h("div",{class:"card rd"},f.msg||"এই ফিচার এখন বন্ধ আছে"));return}
+ app.append({home:homeView,signals:signalsView,analyze:analyzeView,live:liveView,crypto:cryptoView,money:moneyView,profile:profileView}[S.tab]())}
+async function start(t){S.token=t;localStorage.setItem("tk",t);await refresh();render()}
+async function boot(){const q=new URLSearchParams(location.search).get("ref");if(q)localStorage.setItem("ref",q.replace(/[^A-Za-z0-9]/g,"").slice(0,12));try{S.cfg=await (await fetch("/api/config")).json()}catch(e){}
+ if(S.token){try{await refresh()}catch(e){S.token=null}}render();
+ setInterval(()=>{if(S.token&&(S.tab==="signals"||S.tab==="home")&&!document.hidden)refresh().then(render).catch(()=>{})},30000)}
+boot();
+</script></body></html>
